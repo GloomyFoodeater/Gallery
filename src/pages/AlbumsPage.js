@@ -2,6 +2,7 @@ import * as React from 'react';
 import {group} from '../utils/collections';
 import AlbumItem from '../components/AlbumItem';
 import AlbumToolbar from "../components/AlbumToolbar";
+import Table from "../components/Table";
 
 let albums = [{id: 1, name: "Hello"}, {id: 2, name: "World"}];
 
@@ -14,15 +15,7 @@ function AlbumsPage() {
         <div>
             <AlbumToolbar/>
             <hr/>
-            <div>
-                {table.map(row =>
-                    <div className="row">
-                        {row.map(album =>
-                            <AlbumItem id={album.id} name={album.name}/>
-                        )}
-                    </div>)
-                }
-            </div>
+            <Table item={AlbumItem}>{table}</Table>
         </div>
     );
 }
