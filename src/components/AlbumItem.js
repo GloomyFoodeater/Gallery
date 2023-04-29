@@ -1,9 +1,11 @@
 import React, {useCallback, useContext} from 'react';
-import {NavigationContext} from "../App";
+import {NavigationContext, SelectionContext} from "../Contexts";
 import CurrentAlbumPage from "../pages/CurrentAlbumPage";
 
 function AlbumItem({id, name}) {
-    const {selectionMode, setSelectionMode, setActivePage, setActiveAlbum} = useContext(NavigationContext);
+    const {selectionMode, setSelectionMode} = useContext(SelectionContext);
+    const {setActivePage, setActiveAlbum} = useContext(NavigationContext);
+
     const onClick = useCallback(() => {
         setActiveAlbum({id, name});
         setActivePage({ctor: CurrentAlbumPage});

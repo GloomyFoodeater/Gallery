@@ -1,9 +1,11 @@
 import * as React from 'react';
 import {useCallback, useContext} from 'react';
-import {NavigationContext} from "../App";
+import {NavigationContext, SelectionContext} from "../Contexts";
 
 function NavItem({children, page}) {
-    const {activePage, setActivePage, setSelectionMode} = useContext(NavigationContext);
+    const {setSelectionMode} = useContext(SelectionContext);
+    const {activePage, setActivePage} = useContext(NavigationContext);
+
     const onClick = useCallback(() => {
         setActivePage({ctor: page});
         setSelectionMode(false);

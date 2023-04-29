@@ -3,7 +3,7 @@ import {useContext} from 'react';
 import NavItem from "./NavItem";
 import ImagesPage from "../pages/ImagesPage";
 import AlbumsPage from "../pages/AlbumsPage";
-import {NavigationContext} from "../App";
+import {NavigationContext} from "../Contexts";
 import CurrentAlbumPage from "../pages/CurrentAlbumPage";
 
 

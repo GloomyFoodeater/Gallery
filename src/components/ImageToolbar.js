@@ -1,9 +1,10 @@
 import React, {useCallback, useContext} from 'react';
 import SettingItem from "./SettingItem";
-import {NavigationContext} from "../App";
+import {SelectionContext} from "../Contexts";
 
 function ImageToolbar() {
-    const {selectionMode, setSelectionMode} = useContext(NavigationContext);
+    const {selectionMode, setSelectionMode} = useContext(SelectionContext);
+
     const toggleSelection = useCallback(() => setSelectionMode(!selectionMode), [selectionMode, setSelectionMode]);
 
     return (

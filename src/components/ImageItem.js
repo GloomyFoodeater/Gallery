@@ -1,8 +1,9 @@
 import React, {useContext} from 'react';
-import {NavigationContext} from "../App";
+import {SelectionContext} from "../Contexts";
 
 function ImageItem({id, name}) {
-    const {selectionMode} = useContext(NavigationContext);
+    const {selectionMode} = useContext(SelectionContext);
+
     const display = selectionMode ? "inline-block" : "none";
 
     return (
