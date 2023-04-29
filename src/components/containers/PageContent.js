@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {NavigationContext} from "../Contexts";
+import {NavigationContext} from "../../Contexts";
 
 function PageContent() {
     const {activePage} = useContext(NavigationContext);

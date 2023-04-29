@@ -4,7 +4,7 @@ function SettingItem({name, alt, hidden, onClick}) {
     return (
         <button className={`transparentButton ${hidden ? 'hidden' : ''}`}>
             <img
-                src={require(`./../icons/${name}.png`)}
+                src={require(`./../../icons/${name}.png`)}
                 alt={alt}
                 onClick={onClick}
                 className="icon"/>

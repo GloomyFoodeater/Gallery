@@ -1,8 +1,8 @@
 import React from 'react';
-import {groupModulo} from '../utils/collections';
-import AlbumItem from '../components/AlbumItem';
-import AlbumToolbar from "../components/AlbumToolbar";
-import Table from "../components/Table";
+import {groupModulo} from '../../utils/collections';
+import AlbumItem from '../controls/AlbumItem';
+import AlbumToolbar from "../bars/AlbumToolbar";
+import Table from "../containers/Table";
 
 let albums = [
     {id: 1, name: "hello"},
@@ -13,8 +13,8 @@ let albums = [
     {id: 6, name: "World"}
 ];
 
-function AlbumsPage() {
-    const table = groupModulo(albums, 6); // 3/2/1 items in row for lg/md/sm
+function AlbumPage() {
+    const table = groupModulo(albums, 6); // 3/2/1 controls in row for lg/md/sm
 
     return (
         <div className="container-fluid">
@@ -25,4 +25,4 @@ function AlbumsPage() {
     );
 }
 
-export default AlbumsPage;
+export default AlbumPage;

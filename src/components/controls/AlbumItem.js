@@ -1,5 +1,5 @@
 import React, {useCallback, useContext} from 'react';
-import {NavigationContext, SelectionContext} from "../Contexts";
+import {NavigationContext, SelectionContext} from "../../Contexts";
 import CurrentAlbumPage from "../pages/CurrentAlbumPage";
 
 function AlbumItem({id, name}) {
@@ -16,7 +16,7 @@ function AlbumItem({id, name}) {
     return (
         <div className="col-lg-4 col-md-6 col-sm-12">
             <img
-                src={require("./../icons/folder.png")}
+                src={require("./../../icons/folder.png")}
                 alt="Folder"
                 className="img-fluid img-thumbnail"/>
             <br/>

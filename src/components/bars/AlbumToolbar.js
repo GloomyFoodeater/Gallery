@@ -1,6 +1,6 @@
 import React, {useCallback, useContext} from 'react';
-import SettingItem from "./SettingItem";
-import {SelectionContext} from "../Contexts";
+import SettingItem from "../controls/SettingItem";
+import {SelectionContext} from "../../Contexts";
 
 function AlbumToolbar() {
     const {selectionMode, setSelectionMode} = useContext(SelectionContext);

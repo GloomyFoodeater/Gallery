@@ -1,8 +1,8 @@
 import React from 'react';
-import {groupModulo} from "../utils/collections";
-import ImageToolbar from "../components/ImageToolbar";
-import Table from "../components/Table";
-import ImageItem from "../components/ImageItem";
+import {groupModulo} from "../../utils/collections";
+import ImageToolbar from "../bars/ImageToolbar";
+import Table from "../containers/Table";
+import ImageItem from "../controls/ImageItem";
 
 
 let images = [

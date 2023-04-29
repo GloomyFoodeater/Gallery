@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useCallback, useContext} from 'react';
-import {NavigationContext, SelectionContext} from "../Contexts";
+import {NavigationContext, SelectionContext} from "../../Contexts";
 
 function NavItem({children, page}) {
     const {setSelectionMode} = useContext(SelectionContext);

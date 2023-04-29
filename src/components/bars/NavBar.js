@@ -1,20 +1,20 @@
 import * as React from 'react';
 import {useContext} from 'react';
-import NavItem from "./NavItem";
-import ImagesPage from "../pages/ImagesPage";
-import AlbumsPage from "../pages/AlbumsPage";
-import {NavigationContext} from "../Contexts";
+import NavItem from "../controls/NavItem";
+import ImagePage from "../pages/ImagePage";
+import AlbumPage from "../pages/AlbumPage";
+import {NavigationContext} from "../../Contexts";
 import CurrentAlbumPage from "../pages/CurrentAlbumPage";
 
 
-function Navigation() {
+function NavBar() {
     const {activeAlbum} = useContext(NavigationContext);
     return (
         <nav className="navbar navbar-default">
             <div className="container-fluid">
                 <div className="nav nav-pills me-auto">
-                    <NavItem page={ImagesPage}>Все изображения</NavItem>
-                    <NavItem page={AlbumsPage}>Альбомы</NavItem>
+                    <NavItem page={ImagePage}>Все изображения</NavItem>
+                    <NavItem page={AlbumPage}>Альбомы</NavItem>
                     {activeAlbum && (
                         <NavItem page={CurrentAlbumPage}>{activeAlbum.name}</NavItem>)
                     }
@@ -24,4 +24,4 @@ function Navigation() {
     );
 }
 
-export default Navigation;
+export default NavBar;

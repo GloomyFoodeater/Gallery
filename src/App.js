@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import Navigation from './components/Navigation';
-import PageContent from "./pages/PageContent";
-import ImagesPage from "./pages/ImagesPage";
+import NavBar from './components/bars/NavBar';
+import PageContent from "./components/containers/PageContent";
+import ImagePage from "./components/pages/ImagePage";
 import {NavigationContext, SelectionContext} from "./Contexts";
 
 function App() {
     // useState calls constructor in params => wrapper for type
-    const [activePage, setActivePage] = useState({ctor: ImagesPage});
+    const [activePage, setActivePage] = useState({ctor: ImagePage});
     const [activeAlbum, setActiveAlbum] = useState(undefined);
     const [selectionMode, setSelectionMode] = useState(false);
     const [selection, setSelection] = useState([]);
@@ -21,7 +21,7 @@ function App() {
                     selectionMode, setSelectionMode,
                     selection, setSelection
                 }}>
-                    <Navigation/>
+                    <NavBar/>
                     <hr/>
                     <PageContent/>
                 </SelectionContext.Provider>
