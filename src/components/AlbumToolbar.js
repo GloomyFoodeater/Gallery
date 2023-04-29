@@ -9,9 +9,9 @@ function AlbumToolbar() {
     return (
         <div>
             <SettingItem name="to-do-list" alt="Выделить" onClick={toggleSelection}/>
-            <SettingItem name="check" alt="Выделить все" hidden/>
+            <SettingItem name="check" alt="Выделить все" hidden={!selectionMode}/>
             <SettingItem name="add" alt="Добавить"/>
-            <SettingItem name="remove" alt="Удалить" hidden/>
+            <SettingItem name="remove" alt="Удалить" hidden={!selectionMode}/>
         </div>
     );
 }
