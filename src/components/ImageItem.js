@@ -2,13 +2,13 @@ import * as React from 'react';
 
 function ImageItem({id, name}) {
     return (
-        <div className="col-lg-3 col-md-6 col-sm-12 image-container">
-            <a data-fancybox="gallery" href={`/images/${id}`} className="img-fluid">
-                <img src={`/images/${id}`} alt={name}/>
+        <div className="col-lg-3 col-md-6 col-sm-12">
+            <a data-fancybox="gallery" href={require('./../icons/image-placeholder.png')}>
+                <img src={require('./../icons/image-placeholder.png')} alt={name} className="img-fluid"/>
             </a>
             <br/>
-            <input type="checkbox" name={id}/>
-            <a href={`/images/${id}/download`}>{name}</a>
+            <input type="checkbox" value={id}/>
+            <button className="transparentButton">{name}</button>
         </div>
     );
 }

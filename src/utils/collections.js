@@ -9,6 +9,12 @@ function group(collection, getKey) {
     return table;
 }
 
+function groupModulo(collection, divisor) {
+    let index = 0;
+    return group(collection, () => Math.floor(index++ / divisor));
+}
+
 export {
-    group
+    group,
+    groupModulo
 };

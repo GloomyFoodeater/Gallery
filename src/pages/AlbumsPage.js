@@ -1,18 +1,23 @@
-import * as React from 'react';
-import {group} from '../utils/collections';
+import React from 'react';
+import {groupModulo} from '../utils/collections';
 import AlbumItem from '../components/AlbumItem';
 import AlbumToolbar from "../components/AlbumToolbar";
 import Table from "../components/Table";
 
-let albums = [{id: 1, name: "Hello"}, {id: 2, name: "World"}];
+let albums = [
+    {id: 1, name: "hello"},
+    {id: 2, name: "2"},
+    {id: 3, name: "3"},
+    {id: 4, name: "4"},
+    {id: 5, name: "Hello"},
+    {id: 6, name: "World"}
+];
 
 function AlbumsPage() {
-    let i = 0;
-    const itemsInRow = 3;
-    const table = group(albums, () => Math.floor(i++ / itemsInRow));
+    const table = groupModulo(albums, 6); // 3/2/1 items in row for lg/md/sm
 
     return (
-        <div>
+        <div className="container-fluid">
             <AlbumToolbar/>
             <hr/>
             <Table item={AlbumItem}>{table}</Table>

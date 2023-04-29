@@ -1,18 +1,20 @@
-import * as React from 'react';
-import ImageItem from '../components/ImageItem';
-import {groupModulo} from '../utils/collections'
+import React from 'react';
+import {groupModulo} from "../utils/collections";
 import ImageToolbar from "../components/ImageToolbar";
 import Table from "../components/Table";
+import ImageItem from "../components/ImageItem";
+
 
 let images = [
-    {id: 1, name: "hello"},
-    {id: 2, name: 2},
-    {id: 3, name: 3},
     {id: 4, name: 4},
-    {id: 5, name: 5}
+    {id: 5, name: 5},
+    {id: 6, name: 4},
+    {id: 7, name: 5},
+    {id: 8, name: 4},
+    {id: 9, name: 5}
 ];
 
-function ImagesPage() {
+function CurrentAlbumPage() {
     const table = groupModulo(images, 4);
 
     return (
@@ -24,4 +26,4 @@ function ImagesPage() {
     );
 }
 
-export default ImagesPage;
+export default CurrentAlbumPage;

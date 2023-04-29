@@ -1,5 +1,4 @@
-import * as React from 'react';
-import {createContext, useState} from 'react';
+import React, {createContext, useState} from 'react';
 import Navigation from './components/Navigation';
 import PageContent from "./pages/PageContent";
 import ImagesPage from "./pages/ImagesPage";
@@ -12,11 +11,13 @@ function App() {
     const [activeAlbum, setActiveAlbum] = useState(undefined);
 
     return (
-        <Context.Provider value={{activePage, setActivePage, activeAlbum, setActiveAlbum}}>
-            <Navigation/>
-            <hr/>
-            <PageContent/>
-        </Context.Provider>
+        <div className="container-fluid">
+            <Context.Provider value={{activePage, setActivePage, activeAlbum, setActiveAlbum}}>
+                <Navigation/>
+                <hr/>
+                <PageContent/>
+            </Context.Provider>
+        </div>
     );
 }
 
