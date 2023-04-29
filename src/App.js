@@ -13,6 +13,7 @@ function App() {
 
     return (<Context.Provider value={{activePage, setActivePage, activeAlbum, setActiveAlbum}}>
         <Navigation/>
+        <hr/>
         <PageContent/>
     </Context.Provider>);
 }
