@@ -1,8 +1,8 @@
 import React, {useContext} from 'react';
-import {Context} from "../App";
+import {NavigationContext} from "../App";
 
 function PageContent() {
-    const {activePage} = useContext(Context);
+    const {activePage} = useContext(NavigationContext);
     return React.createElement(activePage.ctor);
 }
 

@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {useCallback, useContext} from 'react';
-import {Context} from "../App";
+import {NavigationContext} from "../App";
 
 function NavItem({children, page}) {
-    const {activePage, setActivePage} = useContext(Context);
+    const {activePage, setActivePage, setSelectionMode} = useContext(NavigationContext);
     const onClick = useCallback(() => {
-        setActivePage({ctor: page})
-    }, [page, setActivePage]);
+        setActivePage({ctor: page});
+        setSelectionMode(false);
+    }, [page, setActivePage, setSelectionMode]);
     const disabledOrEmpty = page === activePage.ctor ? 'disabled' : '';
 
     return (

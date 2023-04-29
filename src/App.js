@@ -3,20 +3,25 @@ import Navigation from './components/Navigation';
 import PageContent from "./pages/PageContent";
 import ImagesPage from "./pages/ImagesPage";
 
-export const Context = createContext(null);
+export const NavigationContext = createContext(null);
 
 function App() {
     // useState calls constructor in params => wrapper for type
     const [activePage, setActivePage] = useState({ctor: ImagesPage});
     const [activeAlbum, setActiveAlbum] = useState(undefined);
+    const [selectionMode, setSelectionMode] = useState(false);
 
     return (
         <div className="container-fluid">
-            <Context.Provider value={{activePage, setActivePage, activeAlbum, setActiveAlbum}}>
+            <NavigationContext.Provider value={{
+                activePage, setActivePage,
+                activeAlbum, setActiveAlbum,
+                selectionMode, setSelectionMode
+            }}>
                 <Navigation/>
                 <hr/>
                 <PageContent/>
-            </Context.Provider>
+            </NavigationContext.Provider>
         </div>
     );
 }

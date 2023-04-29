@@ -1,13 +1,15 @@
 import React, {useCallback, useContext} from 'react';
-import {Context} from "../App";
+import {NavigationContext} from "../App";
 import CurrentAlbumPage from "../pages/CurrentAlbumPage";
 
 function AlbumItem({id, name}) {
-    const {setActivePage, setActiveAlbum} = useContext(Context);
+    const {selectionMode, setSelectionMode, setActivePage, setActiveAlbum} = useContext(NavigationContext);
     const onClick = useCallback(() => {
         setActiveAlbum({id, name});
-        setActivePage({ctor: CurrentAlbumPage})
-    }, [id, name, setActiveAlbum, setActivePage]);
+        setActivePage({ctor: CurrentAlbumPage});
+        setSelectionMode(false);
+    }, [id, name, setActiveAlbum, setActivePage, setSelectionMode]);
+    const display = selectionMode ? "inline-block" : "none";
 
     return (
         <div className="col-lg-4 col-md-6 col-sm-12">
@@ -16,8 +18,8 @@ function AlbumItem({id, name}) {
                 alt="Folder"
                 className="img-fluid img-thumbnail"/>
             <br/>
-            <input type="checkbox" value={id}/>
-            <button className="transparentButton" onClick={onClick}> {name} </button>
+            <input type="checkbox" value={id} style={{display}}/>
+            <button className="transparentButton" onClick={onClick}>{name}</button>
         </div>
     );
 }
