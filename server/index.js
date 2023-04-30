@@ -10,8 +10,6 @@ async function start() {
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
 
-    app.get('/', galleryController.getImages);
-
     app.get('/images', galleryController.getImages);
 
     app.get('/images/:id', galleryController.getImage);
@@ -26,7 +24,7 @@ async function start() {
 
     app.get('/albums/:id', galleryController.getAlbum);
 
-    app.post('/albums', galleryController.addAlbum);
+    app.put('/albums', galleryController.addAlbum);
 
     app.put('/albums/:id', galleryController.moveImages);
 

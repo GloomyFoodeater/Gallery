@@ -36,7 +36,7 @@ export async function getImage(id) {
     return data[0];
 }
 
-export async function postImage(image) {
+export async function addImage(image) {
     const dotIndex = image.originalname.indexOf('.')
     const name = image.originalname.slice(0, dotIndex)
     const extension = image.originalname.slice(dotIndex + 1)
@@ -65,7 +65,7 @@ export async function getAlbum(id) {
     return {name: albums[0].name, images};
 }
 
-export async function postAlbum(name) {
+export async function addAlbum(name) {
     await connection.execute(`INSERT album VALUES ('${name}')`);
 }
 

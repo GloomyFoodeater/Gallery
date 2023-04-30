@@ -35,7 +35,7 @@ export async function downloadImage(req, res) {
 }
 
 export async function addImages(req, res) {
-    req.files.forEach(image => gallery.postImage(image).catch(console.log));
+    req.files.forEach(image => gallery.addImage(image).catch(console.log));
     res.end();
 }
 
@@ -73,7 +73,7 @@ export async function getAlbum(req, res) {
 export async function addAlbum(req, res) {
     try {
         const name = req.body.name;
-        await gallery.postAlbum(name);
+        await gallery.addAlbum(name);
         res.end();
     } catch (e) {
         console.log(e);
