@@ -1,42 +1,66 @@
 // TODO: Implement fetches
-function getAllImages() {
+async function getImages() {
+    const images = [
+        {id: 1, name: "hello"},
+        {id: 2, name: 2},
+        {id: 3, name: 3},
+        {id: 4, name: 4},
+        {id: 5, name: 5}
+    ];
+    return Promise.resolve(images);
+}
+
+async function getImage() {
 
 }
 
-function getImage() {
+async function downloadImage() {
 
 }
 
-function downloadImage() {
+async function postImages() {
 
 }
 
-function postImages() {
+async function deleteImage() {
 
 }
 
-function deleteImage() {
-
+async function getAlbums() {
+    const albums = [
+        {id: 1, name: "hello"},
+        {id: 2, name: "2"},
+        {id: 3, name: "3"},
+        {id: 4, name: "4"},
+        {id: 5, name: "Hello"},
+        {id: 6, name: "World"}
+    ];
+    return Promise.resolve(albums);
 }
 
-function getAlbums() {
-
+async function getAlbum() {
+    const album = [
+        {id: 4, name: 4},
+        {id: 5, name: 5},
+        {id: 6, name: 4},
+        {id: 7, name: 5},
+        {id: 8, name: 4},
+        {id: 9, name: 5}
+    ];
+    return Promise.resolve(album);
 }
 
-function getAlbum() {
-
-}
-
-function setSortAndFilter() {
+async function setSortAndFilter() {
 
 }
 
 export {
-    getAllImages,
+    getImages,
     getImage,
     downloadImage,
     postImages,
     deleteImage,
+    getAlbums,
     getAlbum,
     setSortAndFilter
 }

@@ -1,18 +1,32 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import ImageItem from '../controls/ImageItem';
 import {groupModulo} from '../../utils/collections'
 import ImageToolbar from "../bars/ImageToolbar";
 import Table from "../containers/Table";
+import * as gallery from "../../api/gallery";
 
-let images = [
-    {id: 1, name: "hello"},
-    {id: 2, name: 2},
-    {id: 3, name: 3},
-    {id: 4, name: 4},
-    {id: 5, name: 5}
-];
 
 function ImagePage() {
+    const [images, setImages] = useState([]);
+    const [isLoading, setLoading] = useState(true);
+    useEffect(() => {
+        gallery.getImages()
+            .then((result) => {
+                setImages(result);
+                setLoading(false);
+            })
+            .catch(() => {
+                setImages(null);
+                setLoading(false);
+            })
+    }, []);
+
+    if (isLoading)
+        return <h1>Loading...</h1>;
+    if (!images)
+        return <h1>Failed to fetch images!</h1>
+
     const table = groupModulo(images, 4);
 
     return (

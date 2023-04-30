@@ -1,19 +1,30 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {groupModulo} from '../../utils/collections';
 import AlbumItem from '../controls/AlbumItem';
 import AlbumToolbar from "../bars/AlbumToolbar";
 import Table from "../containers/Table";
-
-let albums = [
-    {id: 1, name: "hello"},
-    {id: 2, name: "2"},
-    {id: 3, name: "3"},
-    {id: 4, name: "4"},
-    {id: 5, name: "Hello"},
-    {id: 6, name: "World"}
-];
+import * as gallery from "../../api/gallery";
 
 function AlbumPage() {
+    const [albums, setAlbums] = useState([]);
+    const [isLoading, setLoading] = useState(true);
+    useEffect(() => {
+        gallery.getAlbums()
+            .then((result) => {
+                setAlbums(result);
+                setLoading(false);
+            })
+            .catch(() => {
+                setAlbums(null);
+                setLoading(false);
+            })
+    }, []);
+
+    if (isLoading)
+        return <h1>Loading...</h1>;
+    if (!albums)
+        return <h1>Failed to fetch albums!</h1>
+
     const table = groupModulo(albums, 6); // 3/2/1 controls in row for lg/md/sm
 
     return (

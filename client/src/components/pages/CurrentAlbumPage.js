@@ -1,21 +1,31 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {groupModulo} from "../../utils/collections";
 import ImageToolbar from "../bars/ImageToolbar";
 import Table from "../containers/Table";
 import ImageItem from "../controls/ImageItem";
-
-
-let images = [
-    {id: 4, name: 4},
-    {id: 5, name: 5},
-    {id: 6, name: 4},
-    {id: 7, name: 5},
-    {id: 8, name: 4},
-    {id: 9, name: 5}
-];
+import * as gallery from "../../api/gallery";
 
 function CurrentAlbumPage() {
-    const table = groupModulo(images, 4);
+    const [album, setAlbum] = useState([]);
+    const [isLoading, setLoading] = useState(true);
+    useEffect(() => {
+        gallery.getAlbum()
+            .then((result) => {
+                setAlbum(result);
+                setLoading(false);
+            })
+            .catch(() => {
+                setAlbum(null);
+                setLoading(false);
+            })
+    }, []);
+
+    if (isLoading)
+        return <h1>Loading...</h1>;
+    if (!album)
+        return <h1>Failed to fetch album!</h1>
+
+    const table = groupModulo(album, 4);
 
     return (
         <div className="container-fluid">
