@@ -30,7 +30,7 @@ function CurrentAlbumPage() {
 
     return (
         <div className="container-fluid">
-            <ImageToolbar/>
+            <ImageToolbar images={album}/>
             <hr/>
             <Table item={ImageItem}>{table}</Table>
         </div>

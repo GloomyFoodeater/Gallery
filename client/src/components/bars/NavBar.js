@@ -6,7 +6,6 @@ import AlbumPage from "../pages/AlbumPage";
 import {NavigationContext} from "../../Contexts";
 import CurrentAlbumPage from "../pages/CurrentAlbumPage";
 
-
 function NavBar() {
     const {activeAlbum} = useContext(NavigationContext);
     return (

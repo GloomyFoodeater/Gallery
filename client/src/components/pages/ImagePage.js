@@ -8,7 +8,6 @@ import * as gallery from "../../api/gallery";
 import {SelectionContext} from "../../Contexts";
 import {resetSelection} from "../../utils/selection";
 
-
 function ImagePage() {
     const [images, setImages] = useState([]);
     const [isLoading, setLoading] = useState(true);
@@ -32,7 +31,7 @@ function ImagePage() {
 
     return (
         <div className="container-fluid">
-            <ImageToolbar/>
+            <ImageToolbar images={images}/>
             <hr/>
             <Table item={ImageItem}>{table}</Table>
         </div>
