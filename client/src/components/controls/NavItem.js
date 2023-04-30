@@ -9,6 +9,7 @@ function NavItem({children, page}) {
     const onClick = useCallback(() => {
         setActivePage({ctor: page});
         setSelectionMode(false);
+        window.scrollTo(0, 0);
     }, [page, setActivePage, setSelectionMode]);
     const disabledOrEmpty = page === activePage.ctor ? 'disabled' : '';
 

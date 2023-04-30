@@ -10,6 +10,7 @@ function AlbumItem({id, name}) {
         setActiveAlbum({id, name});
         setActivePage({ctor: CurrentAlbumPage});
         setSelectionMode(false);
+        window.scrollTo(0, 0);
     }, [id, name, setActiveAlbum, setActivePage, setSelectionMode]);
     const display = selectionMode ? "inline-block" : "none";
 
@@ -18,7 +19,8 @@ function AlbumItem({id, name}) {
             <img
                 src={require("./../../icons/folder.png")}
                 alt="Folder"
-                className="img-fluid img-thumbnail"/>
+                className="img-fluid img-thumbnail"
+                onClick={onClick}/>
             <br/>
             <input type="checkbox" value={id} style={{display}}/>
             <button className="transparentButton" onClick={onClick}>{name}</button>
