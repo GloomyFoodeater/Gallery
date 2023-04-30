@@ -1,22 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {groupModulo} from "../../utils/collections";
 import ImageToolbar from "../bars/ImageToolbar";
 import Table from "../containers/Table";
 import ImageItem from "../controls/ImageItem";
 import * as gallery from "../../api/gallery";
+import {resetSelection} from "../../utils/selection";
+import {SelectionContext} from "../../Contexts";
 
 function CurrentAlbumPage() {
     const [album, setAlbum] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const selectionContext = useContext(SelectionContext);
     useEffect(() => {
         gallery.getAlbum()
-            .then((result) => {
-                setAlbum(result);
-                setLoading(false);
-            })
-            .catch(() => {
-                setAlbum(null);
-                setLoading(false);
+            .then((result) => setAlbum(result))
+            .catch(() => setAlbum(null))
+            .finally(() => {
+                resetSelection(selectionContext);
+                setLoading(false)
             })
     }, []);
 

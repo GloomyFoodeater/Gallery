@@ -10,19 +10,24 @@ function App() {
     const [activeAlbum, setActiveAlbum] = useState(undefined);
     const [selectionMode, setSelectionMode] = useState(false);
     const [selection, setSelection] = useState([]);
+    const [nextSelectAll, setNextSelectAll] = useState(true);
+
+    const navigationContext = {
+        activePage, setActivePage,
+        activeAlbum, setActiveAlbum,
+    };
+    const selectionContext = {
+        selectionMode, setSelectionMode,
+        selection, setSelection,
+        nextSelectAll, setNextSelectAll
+    };
 
     return (
         <div className="container-fluid">
-            <NavigationContext.Provider value={{
-                activePage, setActivePage,
-                activeAlbum, setActiveAlbum,
-            }}>
-                <SelectionContext.Provider value={{
-                    selectionMode, setSelectionMode,
-                    selection, setSelection
-                }}>
-                    <NavBar/>
-                    <hr/>
+            <NavigationContext.Provider value={navigationContext}>
+                <NavBar/>
+                <hr/>
+                <SelectionContext.Provider value={selectionContext}>
                     <PageContent/>
                 </SelectionContext.Provider>
             </NavigationContext.Provider>

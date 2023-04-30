@@ -9,8 +9,6 @@ function AlbumItem({id, name}) {
     const onClick = useCallback(() => {
         setActiveAlbum({id, name});
         setActivePage({ctor: CurrentAlbumPage});
-        setSelectionMode(false);
-        window.scrollTo(0, 0);
     }, [id, name, setActiveAlbum, setActivePage, setSelectionMode]);
     const display = selectionMode ? "inline-block" : "none";
 

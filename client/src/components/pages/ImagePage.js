@@ -1,25 +1,26 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import ImageItem from '../controls/ImageItem';
 import {groupModulo} from '../../utils/collections'
 import ImageToolbar from "../bars/ImageToolbar";
 import Table from "../containers/Table";
 import * as gallery from "../../api/gallery";
+import {SelectionContext} from "../../Contexts";
+import {resetSelection} from "../../utils/selection";
 
 
 function ImagePage() {
     const [images, setImages] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const selectionContext = useContext(SelectionContext);
     useEffect(() => {
         gallery.getImages()
-            .then((result) => {
-                setImages(result);
-                setLoading(false);
-            })
-            .catch(() => {
-                setImages(null);
-                setLoading(false);
-            })
+            .then((result) => setImages(result))
+            .catch(() => setImages(null))
+            .finally(() => {
+                resetSelection(selectionContext);
+                setLoading(false)
+            });
     }, []);
 
     if (isLoading)
