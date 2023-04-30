@@ -1,7 +1,7 @@
 const gallery = require('./../model/gallery');
 const path = require('path');
 
-async function getImages(_req, res) {
+export async function getImages(_req, res) {
     try {
         const images = await gallery.getImages();
         res.json(images);
@@ -11,7 +11,7 @@ async function getImages(_req, res) {
     }
 }
 
-async function getImage(req, res) {
+export async function getImage(req, res) {
     try {
         const {uuid} = await gallery.getImage(req.params.id);
         const filePath = path.resolve(__dirname + '/../uploads/' + uuid);
@@ -22,7 +22,7 @@ async function getImage(req, res) {
     }
 }
 
-async function downloadImage(req, res) {
+export async function downloadImage(req, res) {
     try {
         const {extension, name, uuid} = await gallery.getImage(req.params.id);
         const filePath = path.resolve(__dirname + '/../uploads/' + uuid);
@@ -34,18 +34,23 @@ async function downloadImage(req, res) {
     }
 }
 
-async function postImages(req, res) {
+export async function addImages(req, res) {
     req.files.forEach(image => gallery.postImage(image).catch(console.log));
     res.end();
 }
 
-async function deleteImages(req, res) {
-    // Object.keys(req.body).forEach(id => gallery.deleteImage(id).catch(console.log));
+export async function deleteImages(req, res) {
     req.body.forEach(id => gallery.deleteImage(id).catch(console.log));
     res.end();
 }
 
-async function getAlbums(req, res) {
+export async function moveImages(req, res) {
+    const albumId = req.params.id;
+    req.body.forEach(imageId=>gallery.moveImage(imageId, albumId)).catch(console.log);
+    res.end();
+}
+
+export async function getAlbums(req, res) {
     try {
         const albums = await gallery.getAlbums();
         res.json(albums);
@@ -55,7 +60,7 @@ async function getAlbums(req, res) {
     }
 }
 
-async function getAlbum(req, res) {
+export async function getAlbum(req, res) {
     try {
         const images = await gallery.getAlbum(req.params.id);
         res.json(images);
@@ -65,7 +70,7 @@ async function getAlbum(req, res) {
     }
 }
 
-async function postAlbum(req, res) {
+export async function addAlbum(req, res) {
     try {
         const name = req.body.name;
         await gallery.postAlbum(name);
@@ -76,18 +81,12 @@ async function postAlbum(req, res) {
     }
 }
 
-async function deleteAlbum(req, res) {
-    try {
-        const id = req.params.id;
-        await gallery.deleteAlbum(id);
-        res.end();
-    } catch (e) {
-        console.log(e);
-        res.status(404).send('Failed to delete album');
-    }
+export async function deleteAlbums(req, res) {
+    req.body.forEach(id => gallery.deleteAlbum(id).catch(console.log));
+    res.end();
 }
 
-function putSortAndFilter(req, res) {
+export function changeSortAndFilter(req, res) {
     try {
         gallery.setSortAndFilter(...req.body)
         res.end();
@@ -96,16 +95,3 @@ function putSortAndFilter(req, res) {
         res.status(500).send('Failed to set sort and filter');
     }
 }
-
-module.exports = {
-    getImages,
-    getImage,
-    downloadImage,
-    postImages,
-    deleteImages,
-    getAlbums,
-    getAlbum,
-    postAlbum,
-    deleteAlbum,
-    putSortAndFilter
-};

@@ -16,7 +16,6 @@ async function init() {
 
 init();
 
-
 const availableSortOrders = new Set(['ASC', 'DESC']);
 const availableSortFields = new Set(['name', 'lastUpdate']);
 const availableFilters = new Set(['bmp', 'png', 'jpg', 'jpeg', 'gif', 'webp']);
@@ -27,17 +26,17 @@ let state = {
     filters: availableFilters
 }
 
-async function getImages() {
+export async function getImages() {
     const [data, _fields] = await connection.execute('SELECT * FROM image');
     return data;
 }
 
-async function getImage(id) {
+export async function getImage(id) {
     const [data, _fields] = await connection.execute(`SELECT * FROM image WHERE id=${id}`);
     return data[0];
 }
 
-async function postImage(image) {
+export async function postImage(image) {
     const dotIndex = image.originalname.indexOf('.')
     const name = image.originalname.slice(0, dotIndex)
     const extension = image.originalname.slice(dotIndex + 1)
@@ -47,30 +46,34 @@ async function postImage(image) {
     connection.execute(`INSERT image VALUES ('${uuid}', '${name}', '${extension}', '${now}', NULL)`)
 }
 
-async function deleteImage(id) {
+export async function deleteImage(id) {
     connection.execute(`DELETE image WHERE id=${id}`);
 }
 
-async function getAlbums() {
+export function moveImage(imageId, albumId) {
+    connection.execute(`UPDATE image SET albumId=${albumId} WHERE id=${imageId}`);
+}
+
+export async function getAlbums() {
     const [data, _fields] = await connection.execute('SELECT * FROM albums');
     return data;
 }
 
-async function getAlbum(id) {
+export async function getAlbum(id) {
     const [albums, _albumsFields] = await connection.execute(`SELECT * FROM albums WHERE id=${id}`);
     const [images, _imagesFields] = await connection.execute(`SELECT * FROM images WHERE albumId=${id}`);
     return {name: albums[0].name, images};
 }
 
-async function postAlbum(name) {
+export async function postAlbum(name) {
     await connection.execute(`INSERT album VALUES ('${name}')`);
 }
 
-async function deleteAlbum(id) {
+export async function deleteAlbum(id) {
     await connection.execute(`DELETE album WHERE id=${id}`);
 }
 
-function setSortAndFilter(sortOrder, sortField, filters) {
+export function setSortAndFilter({sortOrder, sortField, filters}) {
 
     if (!availableSortOrders.has(sortOrder))
         throw new Error('Invalid sort order');
@@ -84,8 +87,3 @@ function setSortAndFilter(sortOrder, sortField, filters) {
 
     state = {sortOrder, sortField, filters};
 }
-
-
-module.exports = {
-    getImages, getImage, postImage, deleteImage, getAlbums, getAlbum, postAlbum, deleteAlbum, setSortAndFilter
-};

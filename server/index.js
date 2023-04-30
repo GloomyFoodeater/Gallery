@@ -4,7 +4,7 @@ async function start() {
     const bodyParser = require('body-parser');
     const galleryController = require('./controller/galleryController');
 
-    const PORT = 3001;
+    const PORT = 5000;
     const app = express();
 
     app.use(bodyParser.urlencoded({extended: true}));
@@ -12,11 +12,13 @@ async function start() {
 
     app.get('/', galleryController.getImages);
 
+    app.get('/images', galleryController.getImages);
+
     app.get('/images/:id', galleryController.getImage);
 
     app.get('/images/:id/download', galleryController.downloadImage);
 
-    app.post('/images', multer.array('image-input'), galleryController.postImages);
+    app.post('/images', multer.array('image-input'), galleryController.addImages);
 
     app.delete('/images', galleryController.deleteImages);
 
@@ -24,11 +26,13 @@ async function start() {
 
     app.get('/albums/:id', galleryController.getAlbum);
 
-    app.post('/albums', galleryController.postAlbum);
+    app.post('/albums', galleryController.addAlbum);
 
-    app.delete('/albums/:id', galleryController.deleteAlbum);
+    app.put('/albums/:id', galleryController.moveImages);
 
-    app.put('/sort-and-filter', galleryController.putSortAndFilter);
+    app.delete('/albums', galleryController.deleteAlbums);
+
+    app.put('/sort-filter', galleryController.changeSortAndFilter);
 
     app.listen(PORT, () => {
         console.log(`[listen] on port ${PORT}`);

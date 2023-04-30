@@ -1,5 +1,5 @@
 // TODO: Implement fetches
-async function getImages() {
+export async function getImages() {
     const images = [
         {id: 1, name: "hello"},
         {id: 2, name: 2},
@@ -10,23 +10,27 @@ async function getImages() {
     return Promise.resolve(images);
 }
 
-async function getImage() {
+export async function getImage(id) {
 
 }
 
-async function downloadImage() {
+export async function downloadImage(id) {
 
 }
 
-async function postImages() {
+export async function postImages(images) {
 
 }
 
-async function deleteImage() {
+export async function deleteImages(selection) {
 
 }
 
-async function getAlbums() {
+export async function moveImages(selection, album) {
+
+}
+
+export async function getAlbums() {
     const albums = [
         {id: 1, name: "hello"},
         {id: 2, name: "2"},
@@ -38,7 +42,7 @@ async function getAlbums() {
     return Promise.resolve(albums);
 }
 
-async function getAlbum() {
+export async function getAlbum(id) {
     const album = [
         {id: 4, name: 4},
         {id: 5, name: 5},
@@ -50,17 +54,10 @@ async function getAlbum() {
     return Promise.resolve(album);
 }
 
-async function setSortAndFilter() {
+export async function deleteAlbums(selection) {
 
 }
 
-export {
-    getImages,
-    getImage,
-    downloadImage,
-    postImages,
-    deleteImage,
-    getAlbums,
-    getAlbum,
-    setSortAndFilter
+export async function setSortAndFilter({sortOrder, sortField, filters}) {
+
 }
