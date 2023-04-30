@@ -9,7 +9,7 @@ function App() {
     const [activePage, setActivePage] = useState({ctor: ImagePage});
     const [activeAlbum, setActiveAlbum] = useState(undefined);
     const [selectionMode, setSelectionMode] = useState(false);
-    const [selection, setSelection] = useState([]);
+    const [selection, setSelection] = useState(new Set());
     const [nextSelectAll, setNextSelectAll] = useState(true);
 
     const navigationContext = {

@@ -3,9 +3,14 @@ import {NavigationContext, SelectionContext} from "../../Contexts";
 import CurrentAlbumPage from "../pages/CurrentAlbumPage";
 
 function AlbumItem({id, name}) {
-    const {selectionMode, setSelectionMode} = useContext(SelectionContext);
+    const {selectionMode, setSelectionMode, selection, setSelection} = useContext(SelectionContext);
     const {setActivePage, setActiveAlbum} = useContext(NavigationContext);
-
+    const onChange = useCallback(() => {
+        if (selection.has(id)) selection.delete(id);
+        else selection.add(id);
+        setSelection(new Set(selection))
+    }, [id, selection, setSelection]);
+    const checked = selection.has(id);
     const onClick = useCallback(() => {
         setActiveAlbum({id, name});
         setActivePage({ctor: CurrentAlbumPage});
@@ -20,7 +25,7 @@ function AlbumItem({id, name}) {
                 className="img-fluid img-thumbnail"
                 onClick={onClick}/>
             <br/>
-            <input type="checkbox" value={id} style={{display}}/>
+            <input type="checkbox" value={id} style={{display}} checked={checked} onChange={onChange}/>
             <button className="transparentButton" onClick={onClick}>{name}</button>
         </div>
     );

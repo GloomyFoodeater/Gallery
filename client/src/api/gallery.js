@@ -23,7 +23,7 @@ export async function postImages(images) {
 }
 
 export async function deleteImages(selection) {
-
+    console.log(selection);
 }
 
 export async function moveImages(selection, album) {
@@ -55,7 +55,7 @@ export async function getAlbum(id) {
 }
 
 export async function deleteAlbums(selection) {
-
+    console.log(selection);
 }
 
 export async function setSortAndFilter({sortOrder, sortField, filters}) {

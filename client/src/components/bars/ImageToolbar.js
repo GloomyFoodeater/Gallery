@@ -1,11 +1,20 @@
 import React, {useCallback, useContext} from 'react';
 import SettingItem from "../controls/SettingItem";
 import {SelectionContext} from "../../Contexts";
+import {deleteImages} from "../../api/gallery"
+import {resetSelection} from "../../utils/selection";
 
 function ImageToolbar() {
-    const {selectionMode, setSelectionMode} = useContext(SelectionContext);
+    const selectionContext = useContext(SelectionContext);
+    const {selectionMode, setSelectionMode, selection} = selectionContext;
 
-    const toggleSelection = useCallback(() => setSelectionMode(!selectionMode), [selectionMode, setSelectionMode]);
+    const toggleSelection = useCallback(() => {
+        resetSelection(selectionContext)
+        setSelectionMode(!selectionMode)
+    }, [selectionContext, selectionMode, setSelectionMode]);
+    const deleteSelected = useCallback(() => {
+        deleteImages(selection).catch(console.log);
+    }, [selection]);
 
     return (
         <div>
@@ -13,7 +22,7 @@ function ImageToolbar() {
             <SettingItem name="check" alt="Выделить все" hidden={!selectionMode}/>
             <SettingItem name="filter" alt="Фильтрация и сортировка"/>
             <SettingItem name="upload" alt="Загрузить"/>
-            <SettingItem name="recycle-bin" alt="Удалить" hidden={!selectionMode}/>
+            <SettingItem name="recycle-bin" alt="Удалить" onClick={deleteSelected} hidden={!selectionMode}/>
             <SettingItem name="send" alt="В альбом" hidden={!selectionMode}/>
         </div>
     );
