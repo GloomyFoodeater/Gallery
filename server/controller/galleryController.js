@@ -17,9 +17,13 @@ async function getImages(_req, res) {
 
 async function getImage(req, res) {
     try {
-        const {uuid} = await gallery.getImage(req.params.id);
+        const {uuid, name, extension} = await gallery.getImage(req.params.id);
         const filePath = path.resolve(__dirname + '/../uploads/' + uuid);
-        res.sendFile(filePath);
+        const fileName = name + '.' + extension;
+        if (req["Content-Disposition"] === "inline")
+            res.sendFile(filePath);
+        else
+            res.download(filePath, fileName)
     } catch (e) {
         console.log(e);
         res.status(NOT_FOUND).end();

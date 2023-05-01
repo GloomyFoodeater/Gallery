@@ -10,7 +10,7 @@ function ImageItem({id, name}) {
     }, [id, selection, setSelection]);
     const checked = selection.has(id);
     const display = selectionMode ? "inline-block" : "none";
-    const imagePath = require('./../../icons/image-placeholder.png');
+    const imagePath = `${process.env.REACT_APP_API_URL}/images/${id}`;
 
     return (
         <div className="col-lg-3 col-md-6 col-sm-12">
@@ -19,7 +19,7 @@ function ImageItem({id, name}) {
             </a>
             <br/>
             <input type="checkbox" value={id} style={{display}} checked={checked} onChange={onChange}/>
-            <a href={imagePath} className="itemName" download={name}>{name}</a>
+            <a href={imagePath} className="itemName" download>{name}</a>
         </div>
     );
 }

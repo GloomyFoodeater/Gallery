@@ -5,10 +5,6 @@ export async function getImages() {
     return await response.json();
 }
 
-export async function getImage(id) {
-    // TODO: Fetch image
-}
-
 export async function postImages(images) {
     // TODO: Send files
 }
