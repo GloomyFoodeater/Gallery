@@ -35,19 +35,34 @@ async function downloadImage(req, res) {
 }
 
 async function addImages(req, res) {
-    req.files.forEach(image => gallery.addImage(image).catch(console.log));
-    res.end();
+    try {
+        req.files.forEach(image => gallery.addImage(image).catch(console.log));
+        res.end();
+    } catch (e) {
+        console.log(e);
+        res.status(400).send('Bad request. Invalid body format');
+    }
 }
 
 async function deleteImages(req, res) {
-    req.body.forEach(id => gallery.deleteImage(id).catch(console.log));
-    res.end();
+    try {
+        req.body.forEach(id => gallery.deleteImage(id).catch(console.log));
+        res.end();
+    } catch (e) {
+        console.log(e);
+        res.status(400).send('Bad request. Invalid body format');
+    }
 }
 
 async function moveImages(req, res) {
     const albumId = req.params.id;
-    req.body.forEach(imageId => gallery.moveImage(imageId, albumId)).catch(console.log);
-    res.end();
+    try {
+        req.body.forEach(imageId => gallery.moveImage(imageId, albumId)).catch(console.log);
+        res.end();
+    } catch (e) {
+        console.log(e);
+        res.status(400).send('Bad request. Invalid body format');
+    }
 }
 
 async function getAlbums(req, res) {
@@ -82,8 +97,13 @@ async function addAlbum(req, res) {
 }
 
 async function deleteAlbums(req, res) {
-    req.body.forEach(id => gallery.deleteAlbum(id).catch(console.log));
-    res.end();
+    try {
+        req.body.forEach(id => gallery.deleteAlbum(id).catch(console.log));
+        res.end();
+    } catch (e) {
+        console.log(e);
+        res.status(400).send('Bad request. Invalid body format');
+    }
 }
 
 function changeSortAndFilter(req, res) {
@@ -92,7 +112,7 @@ function changeSortAndFilter(req, res) {
         res.end();
     } catch (e) {
         console.log(e);
-        res.status(500).send('Failed to set sort and filter');
+        res.status(400).send(`Bad request. ${e.message}`);
     }
 }
 
