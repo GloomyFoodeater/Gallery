@@ -10,15 +10,16 @@ function ImageItem({id, name}) {
     }, [id, selection, setSelection]);
     const checked = selection.has(id);
     const display = selectionMode ? "inline-block" : "none";
+    const imagePath = require('./../../icons/image-placeholder.png');
 
     return (
         <div className="col-lg-3 col-md-6 col-sm-12">
-            <a data-fancybox="gallery" href={require('./../../icons/image-placeholder.png')}>
-                <img src={require('./../../icons/image-placeholder.png')} alt={name} className="img-fluid"/>
+            <a data-fancybox="gallery" href={imagePath}>
+                <img src={imagePath} alt={name} className="img-fluid"/>
             </a>
             <br/>
             <input type="checkbox" value={id} style={{display}} checked={checked} onChange={onChange}/>
-            <button className="transparentButton">{name}</button>
+            <a href={imagePath} className="itemName" download={name}>{name}</a>
         </div>
     );
 }

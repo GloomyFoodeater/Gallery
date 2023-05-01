@@ -8,7 +8,7 @@ function NavItem({children, page}) {
     const disabledOrEmpty = page === activePage.ctor ? 'disabled' : '';
 
     return (
-        <button className={`nav-link ${disabledOrEmpty} transparentButton`} onClick={onClick}>
+        <button className={`nav-link ${disabledOrEmpty} itemName`} onClick={onClick}>
             {children}
         </button>
     );

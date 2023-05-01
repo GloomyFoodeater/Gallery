@@ -55,13 +55,13 @@ function moveImage(imageId, albumId) {
 }
 
 async function getAlbums() {
-    const [data, _fields] = await connection.execute('SELECT * FROM albums');
+    const [data, _fields] = await connection.execute('SELECT * FROM album');
     return data;
 }
 
 async function getAlbum(id) {
-    const [albums, _albumsFields] = await connection.execute(`SELECT * FROM albums WHERE id=${id}`);
-    const [images, _imagesFields] = await connection.execute(`SELECT * FROM images WHERE albumId=${id}`);
+    const [albums, _albumsFields] = await connection.execute(`SELECT * FROM album WHERE id=${id}`);
+    const [images, _imagesFields] = await connection.execute(`SELECT * FROM image WHERE album_id=${id}`);
     return {name: albums[0].name, images};
 }
 

@@ -14,8 +14,6 @@ async function start() {
 
     app.get('/images/:id', galleryController.getImage);
 
-    app.get('/images/:id/download', galleryController.downloadImage);
-
     app.post('/images', multer.array('image-input'), galleryController.addImages);
 
     app.delete('/images', galleryController.deleteImages);

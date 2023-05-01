@@ -22,18 +22,6 @@ async function getImage(req, res) {
     }
 }
 
-async function downloadImage(req, res) {
-    try {
-        const {extension, name, uuid} = await gallery.getImage(req.params.id);
-        const filePath = path.resolve(__dirname + '/../uploads/' + uuid);
-        const fileName = name + '.' + extension;
-        res.download(filePath, fileName);
-    } catch (e) {
-        console.log(e);
-        res.status(404).send('Not found');
-    }
-}
-
 async function addImages(req, res) {
     try {
         req.files.forEach(image => gallery.addImage(image).catch(console.log));
@@ -117,7 +105,7 @@ function changeSortAndFilter(req, res) {
 }
 
 module.exports = {
-    getImages, getImage, downloadImage, addImages, deleteImages,
+    getImages, getImage, addImages, deleteImages,
     moveImages,
     getAlbums, getAlbum, addAlbum, deleteAlbums,
     changeSortAndFilter

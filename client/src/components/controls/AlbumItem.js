@@ -26,7 +26,7 @@ function AlbumItem({id, name}) {
                 onClick={onClick}/>
             <br/>
             <input type="checkbox" value={id} style={{display}} checked={checked} onChange={onChange}/>
-            <button className="transparentButton" onClick={onClick}>{name}</button>
+            <button className="itemName" onClick={onClick}>{name}</button>
         </div>
     );
 }
