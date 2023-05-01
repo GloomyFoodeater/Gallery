@@ -3,12 +3,14 @@ async function start() {
     const multer = require('multer')({dest: 'uploads'});
     const bodyParser = require('body-parser');
     const galleryController = require('./controller/galleryController');
+    const cors = require('cors');
 
     const PORT = 5000;
     const app = express();
 
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
+    app.use(cors());
 
     app.get('/images', galleryController.getImages);
 

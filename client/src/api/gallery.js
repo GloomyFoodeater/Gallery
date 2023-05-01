@@ -1,13 +1,8 @@
 export async function getImages() {
-    // TODO: Fetch images
-    const images = [
-        {id: 1, name: "hello", extension: "png"},
-        {id: 2, name: 2, extension: "png"},
-        {id: 3, name: 3, extension: "png"},
-        {id: 4, name: 4, extension: "png"},
-        {id: 5, name: 5, extension: "png"}
-    ];
-    return Promise.resolve(images);
+    const url = process.env.REACT_APP_API_URL + "/images";
+    const options = {method: "GET"};
+    const response = await fetch(url, options);
+    return await response.json();
 }
 
 export async function getImage(id) {
@@ -19,8 +14,11 @@ export async function postImages(images) {
 }
 
 export async function deleteImages(selection) {
-    // TODO: Send selection
-    console.log(selection);
+    const url = process.env.REACT_APP_API_URL + "/images";
+    const body = JSON.stringify([...selection]);
+    const headers = {"Content-Type": "application/json"};
+    const options = {method: "DELETE", headers, body};
+    await fetch(url, options);
 }
 
 export async function moveImages(selection, album) {

@@ -1,13 +1,17 @@
 const gallery = require('./../model/gallery');
 const path = require('path');
 
+const BAD_REQUEST = 400;
+const NOT_FOUND = 404;
+const INTERNAL_SERVER_ERROR = 500;
+
 async function getImages(_req, res) {
     try {
         const images = await gallery.getImages();
         res.json(images);
     } catch (e) {
         console.log(e);
-        res.status(404).send('Not found');
+        res.status(NOT_FOUND).end();
     }
 }
 
@@ -18,9 +22,10 @@ async function getImage(req, res) {
         res.sendFile(filePath);
     } catch (e) {
         console.log(e);
-        res.status(404).send('Not found');
+        res.status(NOT_FOUND).end();
     }
 }
+
 
 async function addImages(req, res) {
     try {
@@ -28,7 +33,7 @@ async function addImages(req, res) {
         res.end();
     } catch (e) {
         console.log(e);
-        res.status(400).send('Bad request. Invalid body format');
+        res.status(BAD_REQUEST).end();
     }
 }
 
@@ -38,7 +43,7 @@ async function deleteImages(req, res) {
         res.end();
     } catch (e) {
         console.log(e);
-        res.status(400).send('Bad request. Invalid body format');
+        res.status(BAD_REQUEST).end();
     }
 }
 
@@ -49,7 +54,7 @@ async function moveImages(req, res) {
         res.end();
     } catch (e) {
         console.log(e);
-        res.status(400).send('Bad request. Invalid body format');
+        res.status(BAD_REQUEST).end();
     }
 }
 
@@ -59,7 +64,7 @@ async function getAlbums(req, res) {
         res.json(albums);
     } catch (e) {
         console.log(e);
-        res.status(404).send('Not found');
+        res.status(NOT_FOUND).end();
     }
 }
 
@@ -69,7 +74,7 @@ async function getAlbum(req, res) {
         res.json(images);
     } catch (e) {
         console.log(e);
-        res.status(404).send('Not found');
+        res.status(NOT_FOUND).end();
     }
 }
 
@@ -80,7 +85,7 @@ async function addAlbum(req, res) {
         res.end();
     } catch (e) {
         console.log(e);
-        res.status(500).send('Failed to add album');
+        res.status(INTERNAL_SERVER_ERROR).end();
     }
 }
 
@@ -90,7 +95,7 @@ async function deleteAlbums(req, res) {
         res.end();
     } catch (e) {
         console.log(e);
-        res.status(400).send('Bad request. Invalid body format');
+        res.status(BAD_REQUEST).end();
     }
 }
 
@@ -100,7 +105,7 @@ function changeSortAndFilter(req, res) {
         res.end();
     } catch (e) {
         console.log(e);
-        res.status(400).send(`Bad request. ${e.message}`);
+        res.status(BAD_REQUEST).end();
     }
 }
 

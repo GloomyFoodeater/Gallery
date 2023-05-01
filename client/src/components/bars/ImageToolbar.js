@@ -4,7 +4,7 @@ import {SelectionContext} from "../../Contexts";
 import {deleteImages} from "../../api/gallery"
 import {resetSelection} from "../../utils/selection";
 
-function ImageToolbar({images}) {
+function ImageToolbar({images, onUpdate}) {
     const selectionContext = useContext(SelectionContext);
     const {
         selectionMode,
@@ -26,7 +26,8 @@ function ImageToolbar({images}) {
     }
     const deleteSelected = useCallback(() => {
         deleteImages(selection).catch(console.log);
-    }, [selection]);
+        onUpdate();
+    }, [selection, setSelection, selectionContext]);
 
     return (
         <div>

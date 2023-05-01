@@ -43,15 +43,15 @@ async function addImage(image) {
     const prefix = 'uploads\\'
     const uuid = image.path.slice(image.path.indexOf(prefix) + prefix.length)
     const now = moment().format('YYYY-MM-DD hh:mm:ss');
-    connection.execute(`INSERT image VALUES ('${uuid}', '${name}', '${extension}', '${now}', NULL)`)
+    await connection.execute(`INSERT image VALUES ('${uuid}', '${name}', '${extension}', '${now}', NULL)`)
 }
 
 async function deleteImage(id) {
-    connection.execute(`DELETE image WHERE id=${id}`);
+    await connection.execute(`DELETE FROM image WHERE id=${id}`);
 }
 
-function moveImage(imageId, albumId) {
-    connection.execute(`UPDATE image SET albumId=${albumId} WHERE id=${imageId}`);
+async function moveImage(imageId, albumId) {
+    await connection.execute(`UPDATE image SET albumId=${albumId} WHERE id=${imageId}`);
 }
 
 async function getAlbums() {
@@ -70,7 +70,7 @@ async function addAlbum(name) {
 }
 
 async function deleteAlbum(id) {
-    await connection.execute(`DELETE album WHERE id=${id}`);
+    await connection.execute(`DELETE FROM album WHERE id=${id}`);
 }
 
 function setSortAndFilter({sortOrder, sortField, filters}) {
