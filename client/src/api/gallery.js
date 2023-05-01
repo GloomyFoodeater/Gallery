@@ -47,9 +47,16 @@ export async function getAlbum(id) {
     return await response.json();
 }
 
+export async function addAlbum(name) {
+    // TODO: Add album
+}
+
 export async function deleteAlbums(selection) {
-    // TODO: Send selection
-    console.log(selection);
+    const url = process.env.REACT_APP_API_URL + "/albums";
+    const body = JSON.stringify([...selection]);
+    const headers = {"Content-Type": "application/json"};
+    const options = {method: "DELETE", headers, body};
+    await fetch(url, options);
 }
 
 export async function setSortAndFilter({sortOrder, sortField, filters}) {

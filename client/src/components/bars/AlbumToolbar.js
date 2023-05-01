@@ -4,7 +4,7 @@ import {SelectionContext} from "../../Contexts";
 import {deleteAlbums} from "../../api/gallery";
 import {resetSelection} from "../../utils/selection";
 
-function AlbumToolbar({albums}) {
+function AlbumToolbar({albums, onUpdate}) {
     const selectionContext = useContext(SelectionContext);
     const {
         selectionMode,
@@ -25,7 +25,7 @@ function AlbumToolbar({albums}) {
         setNextSelectAll(!nextSelectAll);
     }
     const deleteSelected = useCallback(() => {
-        deleteAlbums(selection).catch(console.log);
+        deleteAlbums(selection).then(onUpdate);
     }, [selection]);
 
     return (

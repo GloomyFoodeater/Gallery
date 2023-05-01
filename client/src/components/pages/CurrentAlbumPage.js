@@ -34,8 +34,8 @@ function CurrentAlbumPage() {
         const table = groupModulo(album, 4);
         markUp = (
             <div className="container-fluid">
-                <ImageToolbar images={album}/>
-                <hr/>
+                {/*<ImageToolbar images={album}/>*/}
+                {/*<hr/>*/}
                 <Table item={ImageItem}>{table}</Table>
             </div>
         );
