@@ -5,8 +5,13 @@ export async function getImages() {
     return await response.json();
 }
 
-export async function postImages(images) {
-    // TODO: Send files
+export async function postImages(files) {
+    const url = process.env.REACT_APP_API_URL + "/images";
+    const body = new FormData();
+    for (const file of files)
+        body.append('image-input', file, file.name);
+    const options = {method: "POST", body};
+    await fetch(url, options);
 }
 
 export async function deleteImages(selection) {

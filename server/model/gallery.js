@@ -42,8 +42,7 @@ async function addImage(image) {
     const extension = image.originalname.slice(dotIndex + 1)
     const prefix = 'uploads\\'
     const uuid = image.path.slice(image.path.indexOf(prefix) + prefix.length)
-    const now = moment().format('YYYY-MM-DD hh:mm:ss');
-    await connection.execute(`INSERT image VALUES ('${uuid}', '${name}', '${extension}', '${now}', NULL)`)
+    await connection.execute(`INSERT INTO image (uuid, name, extension) VALUES ('${uuid}', '${name}', '${extension}')`)
 }
 
 async function deleteImage(id) {
