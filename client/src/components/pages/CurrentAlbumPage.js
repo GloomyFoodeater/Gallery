@@ -5,15 +5,21 @@ import Table from "../containers/Table";
 import ImageItem from "../controls/ImageItem";
 import * as gallery from "../../api/gallery";
 import {resetSelection} from "../../utils/selection";
-import {SelectionContext} from "../../Contexts";
+import {NavigationContext, SelectionContext} from "../../Contexts";
+
+let markUp = <h1>Loading...</h1>;
 
 function CurrentAlbumPage() {
     const [album, setAlbum] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const selectionContext = useContext(SelectionContext);
+    const {activeAlbum: {id}} = useContext(NavigationContext);
     useEffect(() => {
-        gallery.getAlbum()
-            .then((result) => setAlbum(result))
+        gallery.getAlbum(id)
+            .then(({images}) => {
+                images.sort((a, b) => a.name < b.name ? -1 : +1);
+                setAlbum(images);
+            })
             .catch(() => setAlbum(null))
             .finally(() => {
                 resetSelection(selectionContext);
@@ -22,19 +28,19 @@ function CurrentAlbumPage() {
     }, []);
 
     if (isLoading)
-        return <h1>Loading...</h1>;
-    if (!album)
-        return <h1>Failed to fetch album!</h1>
+        return markUp;
 
-    const table = groupModulo(album, 4);
-
-    return (
-        <div className="container-fluid">
-            <ImageToolbar images={album}/>
-            <hr/>
-            <Table item={ImageItem}>{table}</Table>
-        </div>
-    );
+    if (album) {
+        const table = groupModulo(album, 4);
+        markUp = (
+            <div className="container-fluid">
+                <ImageToolbar images={album}/>
+                <hr/>
+                <Table item={ImageItem}>{table}</Table>
+            </div>
+        );
+    } else markUp = <h1>Failed to fetch album!</h1>
+    return markUp
 }
 
 export default CurrentAlbumPage;

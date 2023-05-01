@@ -5,6 +5,13 @@ export async function getImages() {
     return await response.json();
 }
 
+export async function getImage(id) {
+    const url = process.env.REACT_APP_API_URL + `/images/${id}`;
+    const options = {method: "GET"};
+    const response = await fetch(url, options);
+    return await response.json();
+}
+
 export async function postImages(files) {
     const url = process.env.REACT_APP_API_URL + "/images";
     const body = new FormData();
@@ -27,29 +34,17 @@ export async function moveImages(selection, album) {
 }
 
 export async function getAlbums() {
-    // TODO: Fetch albums
-    const albums = [
-        {id: 1, name: "hello"},
-        {id: 2, name: "2"},
-        {id: 3, name: "3"},
-        {id: 4, name: "4"},
-        {id: 5, name: "Hello"},
-        {id: 6, name: "World"}
-    ];
-    return Promise.resolve(albums);
+    const url = process.env.REACT_APP_API_URL + "/albums";
+    const options = {method: "GET"};
+    const response = await fetch(url, options);
+    return await response.json();
 }
 
 export async function getAlbum(id) {
-    // TODO: fetch album
-    const album = [
-        {id: 4, name: 4, extension: "png"},
-        {id: 5, name: 5, extension: "png"},
-        {id: 6, name: 4, extension: "png"},
-        {id: 7, name: 5, extension: "png"},
-        {id: 8, name: 4, extension: "png"},
-        {id: 9, name: 5, extension: "png"}
-    ];
-    return Promise.resolve(album);
+    const url = process.env.REACT_APP_API_URL + `/albums/${id}`;
+    const options = {method: "GET"};
+    const response = await fetch(url, options);
+    return await response.json();
 }
 
 export async function deleteAlbums(selection) {
