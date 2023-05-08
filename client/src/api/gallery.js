@@ -48,7 +48,13 @@ export async function getAlbum(id) {
 }
 
 export async function addAlbum(name) {
-    // TODO: Add album
+    if (!name)
+        throw new Error('Invalid album name');
+    const url = process.env.REACT_APP_API_URL + "/albums";
+    const headers = {"Content-Type": "application/json"};
+    const body = JSON.stringify({name});
+    const options = {method: "POST", headers, body};
+    await fetch(url, options);
 }
 
 export async function deleteAlbums(selection) {

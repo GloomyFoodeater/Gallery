@@ -24,7 +24,7 @@ async function start() {
 
     app.get('/albums/:id', galleryController.getAlbum);
 
-    app.put('/albums', galleryController.addAlbum);
+    app.post('/albums', galleryController.addAlbum);
 
     app.put('/albums/:id', galleryController.moveImages);
 

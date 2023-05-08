@@ -43,7 +43,7 @@ async function moveImage(imageId, albumId) {
 }
 
 async function getAlbums() {
-    const [data, _fields] = await connection.execute('SELECT * FROM album');
+    const [data, _fields] = await connection.execute('SELECT * FROM album ORDER BY id ASC');
     return data;
 }
 
@@ -54,7 +54,7 @@ async function getAlbum(id) {
 }
 
 async function addAlbum(name) {
-    await connection.execute(`INSERT album VALUES ('${name}')`);
+    await connection.execute(`INSERT album (name) VALUES ('${name}')`);
 }
 
 async function deleteAlbum(id) {

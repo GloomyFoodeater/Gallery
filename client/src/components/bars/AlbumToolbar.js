@@ -1,8 +1,9 @@
-import React, {useCallback, useContext} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import SettingItem from "../controls/SettingItem";
 import {SelectionContext} from "../../Contexts";
-import {deleteAlbums} from "../../api/gallery";
 import {resetSelection} from "../../utils/selection";
+import AddAlbum from "../modals/AddAlbum";
+import {deleteAlbums} from "../../api/gallery";
 
 function AlbumToolbar({albums, onUpdate}) {
     const selectionContext = useContext(SelectionContext);
@@ -14,6 +15,7 @@ function AlbumToolbar({albums, onUpdate}) {
         nextSelectAll,
         setNextSelectAll
     } = selectionContext;
+    const [showAddAlbumModal, setShowAddAlbumModal] = useState(false);
 
     const toggleSelection = useCallback(() => {
         resetSelection(selectionContext);
@@ -24,6 +26,9 @@ function AlbumToolbar({albums, onUpdate}) {
         setSelection(updatedSelection);
         setNextSelectAll(!nextSelectAll);
     }
+
+    const showAddAlbum = useCallback(() => setShowAddAlbumModal(true), [setShowAddAlbumModal]);
+    const hideAddAlbum = useCallback(() => setShowAddAlbumModal(false), [setShowAddAlbumModal]);
     const deleteSelected = useCallback(() => {
         deleteAlbums(selection).then(onUpdate);
     }, [selection]);
@@ -32,7 +37,8 @@ function AlbumToolbar({albums, onUpdate}) {
         <div>
             <SettingItem name="to-do-list" alt="Выделить" onClick={toggleSelection}/>
             <SettingItem name="check" alt="Выделить все" onClick={selectAll} hidden={!selectionMode}/>
-            <SettingItem name="add" alt="Добавить"/>
+            <AddAlbum show={showAddAlbumModal} hideModal={hideAddAlbum} onUpdate={onUpdate}/>
+            <SettingItem name="add" alt="Добавить" onClick={showAddAlbum}/>
             <SettingItem name="remove" alt="Удалить" onClick={deleteSelected} hidden={!selectionMode}/>
         </div>
     );
