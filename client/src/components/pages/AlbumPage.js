@@ -26,7 +26,7 @@ function AlbumPage() {
                 resetSelection(selectionContext);
                 setLoading(false);
             });
-    }, [isLoading]);
+    }, [isLoading]); // Do not put other dependencies to avoid recursion
 
     if (isLoading) return markUp;
     if (albums) {

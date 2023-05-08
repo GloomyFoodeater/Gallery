@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {groupModulo} from "../../utils/collections";
-import ImageToolbar from "../bars/ImageToolbar";
 import Table from "../containers/Table";
 import ImageItem from "../controls/ImageItem";
 import * as gallery from "../../api/gallery";
@@ -16,16 +15,13 @@ function CurrentAlbumPage() {
     const {activeAlbum: {id}} = useContext(NavigationContext);
     useEffect(() => {
         gallery.getAlbum(id)
-            .then(({images}) => {
-                images.sort((a, b) => a.name < b.name ? -1 : +1);
-                setAlbum(images);
-            })
+            .then(({images}) => setAlbum(images))
             .catch(() => setAlbum(null))
             .finally(() => {
                 resetSelection(selectionContext);
                 setLoading(false)
             })
-    }, []);
+    }, [isLoading]); // Do not put other dependencies to avoid recursion
 
     if (isLoading)
         return markUp;
@@ -34,8 +30,6 @@ function CurrentAlbumPage() {
         const table = groupModulo(album, 4);
         markUp = (
             <div className="container-fluid">
-                {/*<ImageToolbar images={album}/>*/}
-                {/*<hr/>*/}
                 <Table item={ImageItem}>{table}</Table>
             </div>
         );
