@@ -12,14 +12,22 @@ function ImageItem({id, name}) {
     const display = selectionMode ? "inline-block" : "none";
     const imagePath = `${process.env.REACT_APP_API_URL}/images/${id}`;
 
+    const img = <img src={imagePath} alt={name} className="img-fluid"/>;
+
     return (
-        <div className="col-lg-3 col-md-6 col-sm-12">
-            <a data-fancybox="gallery" href={imagePath}>
-                <img src={imagePath} alt={name} className="img-fluid"/>
-            </a>
+        <div className="col-lg-3 col-md-6 col-sm-12 wrapper">
+            {selectionMode
+                ? <label htmlFor={`img-check-${id}`}>{img}</label>
+                : <a data-fancybox="gallery" href={imagePath}>{img}</a>
+            }
             <br/>
-            <input type="checkbox" value={id} style={{display}} checked={checked} onChange={onChange}/>
-            <a href={imagePath} className="itemName" download>{name}</a>
+            <input id={`img-check-${id}`} type="checkbox" value={id} style={{display}} checked={checked}
+                   onChange={onChange}
+                   className="checkbox"/>
+            {selectionMode
+                ? <label htmlFor={`img-check-${id}`}>{name}</label>
+                : <a href={imagePath} className="itemName" download>{name}</a>
+            }
         </div>
     );
 }

@@ -16,7 +16,7 @@ async function init() {
 init().then();
 
 async function getImages() {
-    const [data, _fields] = await connection.execute('SELECT * FROM image');
+    const [data, _fields] = await connection.execute('SELECT * FROM image ORDER BY id ASC');
     return data;
 }
 
@@ -49,7 +49,7 @@ async function getAlbums() {
 
 async function getAlbum(id) {
     const [albums, _albumsFields] = await connection.execute(`SELECT * FROM album WHERE id=${id}`);
-    const [images, _imagesFields] = await connection.execute(`SELECT * FROM image WHERE album_id=${id}`);
+    const [images, _imagesFields] = await connection.execute(`SELECT * FROM image WHERE album_id=${id} ORDER BY id ASC`);
     return {id, name: albums[0].name, images};
 }
 
