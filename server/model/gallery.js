@@ -1,4 +1,3 @@
-const moment = require('moment');
 const mysql = require('mysql2/promise');
 
 let connection;
@@ -14,17 +13,7 @@ async function init() {
 
 }
 
-init();
-
-const availableSortOrders = new Set(['ASC', 'DESC']);
-const availableSortFields = new Set(['name', 'lastUpdate']);
-const availableFilters = new Set(['bmp', 'png', 'jpg', 'jpeg', 'gif', 'webp']);
-
-let state = {
-    sortOrder: 'ASC',
-    sortField: 'name',
-    filters: availableFilters
-}
+init().then();
 
 async function getImages() {
     const [data, _fields] = await connection.execute('SELECT * FROM image');
@@ -72,25 +61,8 @@ async function deleteAlbum(id) {
     await connection.execute(`DELETE FROM album WHERE id=${id}`);
 }
 
-function setSortAndFilter({sortOrder, sortField, filters}) {
-
-    if (!availableSortOrders.has(sortOrder))
-        throw new Error('Invalid sort order');
-
-    if (!availableSortFields.has(sortField))
-        throw new Error('Invalid sort field');
-
-    const invalidFilters = filters.filter(filter => !availableFilters.has(filter));
-    if (invalidFilters)
-        throw new Error(`Invalid filters: ${invalidFilters}`);
-
-    state = {sortOrder, sortField, filters};
-}
-
 module.exports = {
     getImages, getImage, addImage, deleteImage,
     moveImage,
     getAlbums, getAlbum, addAlbum, deleteAlbum,
-    setSortAndFilter
-
 }

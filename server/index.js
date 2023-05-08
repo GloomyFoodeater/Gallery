@@ -30,8 +30,6 @@ async function start() {
 
     app.delete('/albums', galleryController.deleteAlbums);
 
-    app.put('/sort-filter', galleryController.changeSortAndFilter);
-
     app.listen(PORT, () => {
         console.log(`[listen] on port ${PORT}`);
     });

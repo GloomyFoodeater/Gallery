@@ -58,7 +58,3 @@ export async function deleteAlbums(selection) {
     const options = {method: "DELETE", headers, body};
     await fetch(url, options);
 }
-
-export async function setSortAndFilter({sortOrder, sortField, filters}) {
-    // TODO: Send sort and filter object
-}

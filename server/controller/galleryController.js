@@ -103,19 +103,8 @@ async function deleteAlbums(req, res) {
     }
 }
 
-function changeSortAndFilter(req, res) {
-    try {
-        gallery.setSortAndFilter(...req.body)
-        res.end();
-    } catch (e) {
-        console.log(e);
-        res.status(BAD_REQUEST).end();
-    }
-}
-
 module.exports = {
     getImages, getImage, addImages, deleteImages,
     moveImages,
     getAlbums, getAlbum, addAlbum, deleteAlbums,
-    changeSortAndFilter
 }

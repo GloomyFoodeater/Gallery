@@ -35,7 +35,6 @@ function ImageToolbar({images, onUpdate}) {
         <div>
             <SettingItem name="to-do-list" alt="Выделить" onClick={toggleSelection}/>
             <SettingItem name="check" alt="Выделить все" onClick={selectAll} hidden={!selectionMode}/>
-            <SettingItem name="filter" alt="Фильтрация и сортировка"/>
             <label htmlFor="image-input">
                 <SettingItem name="upload" alt="Загрузить"/>
             </label>
