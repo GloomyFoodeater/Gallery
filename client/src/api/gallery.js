@@ -29,8 +29,12 @@ export async function deleteImages(selection) {
     await fetch(url, options);
 }
 
-export async function moveImages(selection, album) {
-    // TODO: Send selection
+export async function moveImages(selection, id) {
+    const url = process.env.REACT_APP_API_URL + `/albums/${id}`;
+    const body = JSON.stringify([...selection]);
+    const headers = {"Content-Type": "application/json"};
+    const options = {method: "PUT", headers, body};
+    await fetch(url, options);
 }
 
 export async function getAlbums() {

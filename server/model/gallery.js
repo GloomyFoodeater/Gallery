@@ -39,7 +39,7 @@ async function deleteImage(id) {
 }
 
 async function moveImage(imageId, albumId) {
-    await connection.execute(`UPDATE image SET albumId=${albumId} WHERE id=${imageId}`);
+    await connection.execute(`UPDATE image SET album_id=${albumId} WHERE id=${imageId}`);
 }
 
 async function getAlbums() {

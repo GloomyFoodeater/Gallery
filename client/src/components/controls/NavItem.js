@@ -7,11 +7,11 @@ function NavItem({children, page}) {
     const onClick = useCallback((event) => {
         event.preventDefault();
         setActivePage({ctor: page})
-    }, [page]);
+    }, [page, setActivePage]);
     const disabledOrEmpty = page === activePage.ctor ? 'disabled' : '';
 
     return (
-        <a className={`nav-link ${disabledOrEmpty}`} onClick={onClick}>
+        <a className={`nav-link ${disabledOrEmpty}`} href="#" onClick={onClick}>
             {children}
         </a>
     );

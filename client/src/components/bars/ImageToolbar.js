@@ -1,8 +1,9 @@
-import React, {useCallback, useContext} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import SettingItem from "../controls/SettingItem";
 import {SelectionContext} from "../../Contexts";
 import {deleteImages, postImages} from "../../api/gallery"
 import {resetSelection} from "../../utils/selection";
+import MoveToAlbum from "../modals/MoveToAlbum";
 
 function ImageToolbar({images, onUpdate}) {
     const selectionContext = useContext(SelectionContext);
@@ -14,7 +15,10 @@ function ImageToolbar({images, onUpdate}) {
         nextSelectAll,
         setNextSelectAll
     } = selectionContext;
+    const [showMoveModal, setShowMoveModal] = useState(false);
 
+    const showMove = useCallback(() => setShowMoveModal(true), [setShowMoveModal]);
+    const hideMove = useCallback(() => setShowMoveModal(false), [setShowMoveModal]);
     const toggleSelection = useCallback(() => {
         resetSelection(selectionContext)
         setSelectionMode(!selectionMode)
@@ -26,7 +30,7 @@ function ImageToolbar({images, onUpdate}) {
     }
     const deleteSelected = useCallback(() => {
         deleteImages(selection).then(onUpdate);
-    }, [selection, setSelection, selectionContext]);
+    }, [selection, onUpdate]);
     const addFiles = (event) => {
         postImages(event.currentTarget.files).then(onUpdate);
     }
@@ -40,7 +44,8 @@ function ImageToolbar({images, onUpdate}) {
             </label>
             <input type="file" multiple id='image-input' onChange={addFiles} hidden/>
             <SettingItem name="recycle-bin" alt="Удалить" onClick={deleteSelected} hidden={!selectionMode}/>
-            <SettingItem name="send" alt="В альбом" hidden={!selectionMode}/>
+            <MoveToAlbum show={showMoveModal} hideModal={hideMove}/>
+            <SettingItem name="send" alt="В альбом" hidden={!selectionMode} onClick={showMove}/>
         </div>
     );
 }

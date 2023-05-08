@@ -52,9 +52,9 @@ async function deleteImages(req, res) {
 }
 
 async function moveImages(req, res) {
-    const albumId = req.params.id;
     try {
-        req.body.forEach(imageId => gallery.moveImage(imageId, albumId)).catch(console.log);
+        const albumId = req.params.id;
+        req.body.forEach(imageId => gallery.moveImage(imageId, albumId).catch(console.log));
         res.end();
     } catch (e) {
         console.log(e);

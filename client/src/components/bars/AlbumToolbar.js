@@ -31,7 +31,7 @@ function AlbumToolbar({albums, onUpdate}) {
     const hideAddAlbum = useCallback(() => setShowAddAlbumModal(false), [setShowAddAlbumModal]);
     const deleteSelected = useCallback(() => {
         deleteAlbums(selection).then(onUpdate);
-    }, [selection]);
+    }, [selection, onUpdate]);
 
     return (
         <div>
