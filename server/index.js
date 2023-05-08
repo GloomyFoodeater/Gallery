@@ -1,39 +1,21 @@
-async function start() {
-    const express = require('express');
-    const multer = require('multer')({dest: 'uploads'});
-    const bodyParser = require('body-parser');
-    const galleryController = require('./controller/galleryController');
-    const cors = require('cors');
+require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-    const PORT = 5000;
-    const app = express();
+const imagesRouter = require('./routes/imagesRouter');
+const albumsRouter = require('./routes/albumsRouter');
 
-    app.use(bodyParser.urlencoded({extended: true}));
-    app.use(bodyParser.json());
-    app.use(cors());
+const app = express();
 
-    app.get('/images', galleryController.getImages);
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(cors());
 
-    app.get('/images/:id', galleryController.getImage);
+app.use('/images', imagesRouter);
+app.use('/albums', albumsRouter);
 
-    app.post('/images', multer.array('image-input'), galleryController.addImages);
+app.listen(process.env.PORT, () => {
+    console.log(`[listen] on port ${process.env.PORT}`);
+});
 
-    app.delete('/images', galleryController.deleteImages);
-
-    app.get('/albums', galleryController.getAlbums);
-
-    app.get('/albums/:id', galleryController.getAlbum);
-
-    app.post('/albums', galleryController.addAlbum);
-
-    app.put('/albums/:id', galleryController.moveImages);
-
-    app.delete('/albums', galleryController.deleteAlbums);
-
-    app.listen(PORT, () => {
-        console.log(`[listen] on port ${PORT}`);
-    });
-
-}
-
-start();
