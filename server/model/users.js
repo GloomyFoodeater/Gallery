@@ -1,19 +1,29 @@
+const {hash, compareSync} = require('bcrypt');
 const {getConnection} = require('./../db');
 
-async function createUser() {
-    // TODO: Implement
-    return new Promise((resolve, reject) => {
-        console.log('Create user')
-        resolve();
-    });
+async function createUser({login, password}) {
+    const passwordHash = await hash(password, 5);
+    await getConnection().execute(`INSERT INTO user (login, password) VALUES ("${login}", "${passwordHash}")`);
 }
 
-async function getUser({login, password}) {
-    // TODO: Implement
-    console.log('Get user');
-    return Promise.resolve(true);
+async function getUserById(id) {
+    let user;
+    try {
+        const [users] = await getConnection().execute(`SELECT * FROM user WHERE id=${id}`);
+        user = users[0];
+    } catch {
+        user = undefined;
+    }
+    return user;
+}
+
+async function getUserByPair({login, password}) {
+    const [users] = await getConnection().execute(`SELECT * FROM user WHERE login="${login}"`);
+    const user = users[0];
+    const correctPassword = compareSync(password, user.password.toString());
+    return correctPassword ? user : undefined;
 }
 
 module.exports = {
-    createUser, getUser
+    createUser, getUserByPair, getUserById
 }

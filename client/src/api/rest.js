@@ -101,8 +101,9 @@ export async function signIn(login, password) {
 
     const user = {login, password};
     const url = process.env.REACT_APP_API_URL + "/session";
+    const headers = {"Content-Type": "application/json"};
     const body = JSON.stringify(user);
-    const options = {method: "POST", credentials: 'include', body};
+    const options = {method: "POST", headers, credentials: 'include', body};
 
     return await fetchWrapper(url, options);
 }

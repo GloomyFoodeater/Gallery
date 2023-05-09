@@ -2,8 +2,9 @@ const gallery = require('./../model/gallery');
 const path = require('path');
 const {NOT_FOUND, BAD_REQUEST} = require("../const/http_codes");
 
-async function getImages(_req, res) {
+async function getImages(req, res) {
     try {
+        const token = req.cookies[process.env.ACCESS_TOKEN];
         const images = await gallery.getImages();
         res.json(images);
     } catch (e) {
