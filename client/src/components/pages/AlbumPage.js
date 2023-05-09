@@ -3,7 +3,7 @@ import {groupModulo} from '../../utils/collections';
 import AlbumItem from '../controls/AlbumItem';
 import AlbumToolbar from "../bars/AlbumToolbar";
 import Table from "../containers/Table";
-import * as gallery from "../../api/gallery";
+import * as gallery from "../../api/rest";
 import {NavigationContext, SelectionContext} from "../../Contexts";
 import {resetSelection} from "../../utils/selection";
 

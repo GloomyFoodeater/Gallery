@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Modal from "react-bootstrap/Modal";
 import {Button} from "react-bootstrap";
-import {getAlbums, moveImages} from "../../api/gallery";
+import {getAlbums, moveImages} from "../../api/rest";
 import {SelectionContext} from "../../Contexts";
 import {resetSelection} from "../../utils/selection";
 

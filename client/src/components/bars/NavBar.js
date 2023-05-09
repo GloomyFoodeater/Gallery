@@ -1,22 +1,44 @@
 import * as React from 'react';
-import {useContext} from 'react';
+import {useCallback, useContext} from 'react';
 import NavItem from "../controls/NavItem";
 import ImagePage from "../pages/ImagePage";
 import AlbumPage from "../pages/AlbumPage";
-import {NavigationContext} from "../../Contexts";
+import {NavigationContext, UserContext} from "../../Contexts";
 import CurrentAlbumPage from "../pages/CurrentAlbumPage";
+import SignUpPage from "../pages/SignUpPage";
+import SignInPage from "../pages/SignInPage";
+import * as api from "./../../api/rest";
+import SettingItem from "../controls/SettingItem";
 
 function NavBar() {
     const {activeAlbum} = useContext(NavigationContext);
+    const {isAuthorized, setIsAuthorized} = useContext(UserContext);
+    const signOut = useCallback(() => {
+        api.signOut().then(() => setIsAuthorized(false));
+    }, [setIsAuthorized]);
+
+
+    const unAuthorizedPage = (
+        <>
+            <NavItem page={SignUpPage}>Регистрация</NavItem>
+            <NavItem page={SignInPage}>Вход</NavItem>
+        </>
+    );
+    const authorizedPage = (
+        <>
+            <SettingItem name="logout" alt="Выход" onClick={signOut}/>
+            <NavItem page={ImagePage}>Все изображения</NavItem>
+            <NavItem page={AlbumPage}>Альбомы</NavItem>
+            {activeAlbum && (
+                <NavItem page={CurrentAlbumPage}>{activeAlbum.name}</NavItem>)
+            }
+        </>
+    );
     return (
         <nav className="navbar navbar-default">
             <div className="container-fluid">
                 <div className="nav nav-pills me-auto">
-                    <NavItem page={ImagePage}>Все изображения</NavItem>
-                    <NavItem page={AlbumPage}>Альбомы</NavItem>
-                    {activeAlbum && (
-                        <NavItem page={CurrentAlbumPage}>{activeAlbum.name}</NavItem>)
-                    }
+                    {isAuthorized ? <>{authorizedPage}</> : <>{unAuthorizedPage}</>}
                 </div>
             </div>
         </nav>

@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import {Button} from "react-bootstrap";
-import {addAlbum} from "../../api/gallery";
+import {addAlbum} from "../../api/rest";
 
 function AddAlbum({show, hideModal, onUpdate}) {
     const [name, setName] = useState('');

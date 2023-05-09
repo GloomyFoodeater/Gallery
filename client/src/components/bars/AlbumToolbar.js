@@ -3,7 +3,7 @@ import SettingItem from "../controls/SettingItem";
 import {SelectionContext} from "../../Contexts";
 import {resetSelection} from "../../utils/selection";
 import AddAlbum from "../modals/AddAlbum";
-import {deleteAlbums} from "../../api/gallery";
+import {deleteAlbums} from "../../api/rest";
 
 function AlbumToolbar({albums, onUpdate}) {
     const selectionContext = useContext(SelectionContext);

@@ -1,7 +1,7 @@
 import React, {useCallback, useContext, useState} from 'react';
 import SettingItem from "../controls/SettingItem";
 import {SelectionContext} from "../../Contexts";
-import {deleteImages, postImages} from "../../api/gallery"
+import {deleteImages, postImages} from "../../api/rest"
 import {resetSelection} from "../../utils/selection";
 import MoveToAlbum from "../modals/MoveToAlbum";
 

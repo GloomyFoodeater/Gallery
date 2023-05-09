@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {groupModulo} from "../../utils/collections";
 import Table from "../containers/Table";
 import ImageItem from "../controls/ImageItem";
-import * as gallery from "../../api/gallery";
+import * as gallery from "../../api/rest";
 import {resetSelection} from "../../utils/selection";
 import {NavigationContext, SelectionContext} from "../../Contexts";
 

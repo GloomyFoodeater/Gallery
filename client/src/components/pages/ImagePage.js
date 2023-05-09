@@ -4,7 +4,7 @@ import ImageItem from '../controls/ImageItem';
 import {groupModulo} from '../../utils/collections'
 import ImageToolbar from "../bars/ImageToolbar";
 import Table from "../containers/Table";
-import * as gallery from "../../api/gallery";
+import * as gallery from "../../api/rest";
 import {SelectionContext} from "../../Contexts";
 import {resetSelection} from "../../utils/selection";
 

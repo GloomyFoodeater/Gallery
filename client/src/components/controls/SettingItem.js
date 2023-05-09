@@ -2,13 +2,13 @@ import * as React from 'react';
 
 function SettingItem({name, alt, hidden, onClick}) {
     return (
-        <span className={`itemName ${hidden ? 'hidden' : ''}`}>
+        <button className={`itemName ${hidden ? 'hidden' : ''}`}
+                onClick={onClick}>
             <img
                 src={require(`./../../icons/${name}.png`)}
                 alt={alt}
-                onClick={onClick}
                 className="icon"/>
-        </span>
+        </button>
     );
 }
 
