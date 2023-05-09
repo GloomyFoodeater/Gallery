@@ -7,16 +7,14 @@ import {NavigationContext, UserContext} from "../../Contexts";
 import CurrentAlbumPage from "../pages/CurrentAlbumPage";
 import SignUpPage from "../pages/SignUpPage";
 import SignInPage from "../pages/SignInPage";
-import * as api from "./../../api/rest";
+import {signOut} from "../../api/current";
 import SettingItem from "../controls/SettingItem";
 
 function NavBar() {
     const {activeAlbum} = useContext(NavigationContext);
     const {isAuthorized, setIsAuthorized} = useContext(UserContext);
-    const signOut = useCallback(() => {
-        api.signOut().then(() => setIsAuthorized(false));
-    }, [setIsAuthorized]);
-
+    const onThen = useCallback(() => setIsAuthorized(false), [setIsAuthorized]);
+    const onClick = useCallback(() => signOut({onThen, onCatch: alert}), [onThen]);
 
     const unAuthorizedPage = (
         <>
@@ -26,7 +24,7 @@ function NavBar() {
     );
     const authorizedPage = (
         <>
-            <SettingItem name="logout" alt="Выход" onClick={signOut}/>
+            <SettingItem name="logout" alt="Выход" onClick={onClick}/>
             <NavItem page={ImagePage}>Все изображения</NavItem>
             <NavItem page={AlbumPage}>Альбомы</NavItem>
             {activeAlbum && (

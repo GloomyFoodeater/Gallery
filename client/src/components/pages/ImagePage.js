@@ -4,7 +4,7 @@ import ImageItem from '../controls/ImageItem';
 import {groupModulo} from '../../utils/collections'
 import ImageToolbar from "../bars/ImageToolbar";
 import Table from "../containers/Table";
-import * as gallery from "../../api/rest";
+import * as gallery from "../../api/current";
 import {SelectionContext, UserContext} from "../../Contexts";
 import {resetActivePage} from "../../utils/reset";
 
@@ -17,13 +17,15 @@ function ImagePage() {
     const userContext = useContext(UserContext);
     const onUpdate = useCallback(() => setLoading(true), [setLoading]);
     useEffect(() => {
-        gallery.getImages()
-            .then((result) => setImages(result))
-            .catch(() => setImages(null))
-            .finally(() => {
-                resetActivePage(selectionContext, userContext);
-                setLoading(false)
-            });
+        const onCatch = (reason) => {
+            setImages(null);
+            alert(reason);
+        };
+        const onFinally = () => {
+            resetActivePage(selectionContext, userContext);
+            setLoading(false)
+        };
+        gallery.getImages({onThen:  setImages, onFinally, onCatch});
     }, [isLoading]); // Do not put other dependencies to avoid recursion
 
     if (isLoading)
@@ -38,7 +40,7 @@ function ImagePage() {
                 <Table item={ImageItem}>{table}</Table>
             </div>
         );
-    } else markUp = <h1>Failed to fetch images!</h1>;
+    } else markUp = <h1>Не удалось загрузить изображения</h1>;
     return markUp;
 }
 

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Modal from "react-bootstrap/Modal";
 import {Button} from "react-bootstrap";
-import {getAlbums, moveImages} from "../../api/rest";
+import {getAlbums, moveImages} from "../../api/current";
 import {SelectionContext, UserContext} from "../../Contexts";
 import {resetActivePage} from "../../utils/reset";
 
@@ -12,17 +12,19 @@ function MoveToAlbum({show, hideModal}) {
     const userContext = useContext(UserContext);
     const {selection} = selectionContext;
     const confirm = () => {
-        moveImages(selection, activeId).then(() => {
+        const onThen = () => {
             hideModal();
             resetActivePage(selectionContext, userContext);
-        }).catch(console.log);
+        }
+        moveImages({selection, id: activeId, onThen, onCatch: alert});
     };
 
     useEffect(() => {
-        getAlbums().then(result => {
+        const onThen = (result) => {
             setAlbums(result);
             setActiveId(result[0]?.id);
-        });
+        };
+        getAlbums({onThen, onCatch: alert});
     }, [show]);
 
     return (

@@ -3,7 +3,7 @@ import {groupModulo} from '../../utils/collections';
 import AlbumItem from '../controls/AlbumItem';
 import AlbumToolbar from "../bars/AlbumToolbar";
 import Table from "../containers/Table";
-import * as gallery from "../../api/rest";
+import {getAlbums} from "../../api/current";
 import {NavigationContext, SelectionContext, UserContext} from "../../Contexts";
 import {resetActivePage} from "../../utils/reset";
 
@@ -17,16 +17,19 @@ function AlbumPage() {
     const {activeAlbum, setActiveAlbum} = useContext(NavigationContext);
     const onUpdate = useCallback(() => setLoading(true), [setLoading]);
     useEffect(() => {
-        gallery.getAlbums()
-            .then((result) => {
-                if (activeAlbum && !result.find(album => album.id === activeAlbum.id)) setActiveAlbum(undefined);
-                setAlbums(result)
-            })
-            .catch(() => setAlbums(null))
-            .finally(() => {
-                resetActivePage(selectionContext, userContext);
-                setLoading(false);
-            });
+        const onThen = (result) => {
+            if (activeAlbum && !result.find(album => album.id === activeAlbum.id)) setActiveAlbum(undefined);
+            setAlbums(result)
+        }
+        const onCatch = (reason) => {
+            setAlbums(null);
+            alert(reason);
+        }
+        const onFinally = () => {
+            resetActivePage(selectionContext, userContext);
+            setLoading(false);
+        }
+        getAlbums({onThen, onCatch, onFinally});
     }, [isLoading]); // Do not put other dependencies to avoid recursion
 
     if (isLoading) return markUp;
@@ -39,7 +42,7 @@ function AlbumPage() {
                 <Table item={AlbumItem}>{table}</Table>
             </div>
         );
-    } else markUp = <h1>Failed to fetch albums!</h1>
+    } else markUp = <h1>Не удалось загрузить альбомы</h1>
 
     return markUp;
 }

@@ -1,17 +1,15 @@
 import React, {useCallback, useContext, useState} from 'react';
 import {Button, Form} from "react-bootstrap";
-import {signUp} from "../../api/rest";
+import {signUp} from "../../api/current";
 import {UserContext} from "../../Contexts";
 
 function SignUpPage() {
     const {setIsAuthorized} = useContext(UserContext);
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
-    const onClick = useCallback(() => {
-        signUp({login, password}).then(() => {
-            setIsAuthorized(true);
-        }).catch(e => alert(e));
-    }, [login, password, setIsAuthorized]);
+
+    const onThen = useCallback(() => setIsAuthorized(true), [setIsAuthorized]);
+    const onClick = () => signUp({login, password, onThen, onCatch: alert});
     return (
         <div style={{margin: "auto", width: "50%", textAlign: "center"}}>
             <Form>

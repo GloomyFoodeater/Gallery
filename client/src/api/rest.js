@@ -1,118 +1,163 @@
-function isJson(response) {
-    // response.bodyUsed is false on empty arrays
-    return response.headers.get('Content-Type')?.includes("application/json") &&
-        (response.headers.get('Content-Length') ?? 0) > 0;
-}
-
-async function fetchWrapper(url, options) {
+async function fetchWrapperAsync(url, options) {
     const response = await fetch(url, options);
+
+    // response.bodyUsed is false on empty arrays
+    const contentType = response.headers.get('Content-Type');
+    const contentLength = response.headers.get('Content-Length') ?? 0;
+    const isJson = contentType?.includes("application/json") && contentLength > 0;
+
     if (response.status !== 200) {
-        const {message} = await response.json();
-        throw new Error(message);
+        const {message} = isJson ? await response.json() : "Что-то пошло не так";
+        throw new Error(response.status + ': ' + message);
     }
-    console.log(response.headers.get('Content-Length'));
-    if (isJson(response)) return await response.json();
+
+    if (isJson) return await response.json();
 }
 
-export async function getImages() {
+function fetchWrapper({url, options, onThen, onCatch, onFinally}) {
+    fetchWrapperAsync(url, options).then(onThen).catch(onCatch).finally(onFinally);
+}
+
+export function getImages({onThen, onCatch, onFinally}) {
     const url = process.env.REACT_APP_API_URL + "/images";
     const options = {method: "GET", credentials: 'include'};
 
-    return await fetchWrapper(url, options);
+    fetchWrapper({url, options, onThen, onCatch, onFinally});
 }
 
-export async function postImages(files) {
+export function postImages({files, onThen, onCatch, onFinally}) {
     const url = process.env.REACT_APP_API_URL + "/images";
     const body = new FormData();
     for (const file of files)
         body.append('image-input', file, file.name);
     const options = {method: "POST", credentials: 'include', body};
 
-    return await fetchWrapper(url, options);
+    fetchWrapper({url, options, onThen, onCatch, onFinally});
 }
 
-export async function deleteImages(selection) {
+export function deleteImages({selection, onThen, onCatch, onFinally}) {
     const url = process.env.REACT_APP_API_URL + "/images";
-    const body = JSON.stringify([...selection]);
     const headers = {"Content-Type": "application/json"};
+
+    let body;
+    try {
+        body = JSON.stringify([...selection]);
+    } catch {
+        onCatch && onCatch("Не удалось сериализовать выделенные фотографии");
+        onFinally && onFinally();
+        return;
+    }
     const options = {method: "DELETE", credentials: 'include', headers, body};
 
-    return await fetchWrapper(url, options);
+    fetchWrapper({url, options, onThen, onCatch, onFinally});
 }
 
-export async function moveImages(selection, id) {
+export function moveImages({selection, id, onThen, onCatch, onFinally}) {
     const url = process.env.REACT_APP_API_URL + `/albums/${id}`;
-    const body = JSON.stringify([...selection]);
     const headers = {"Content-Type": "application/json"};
+
+    let body;
+    try {
+        body = JSON.stringify([...selection]);
+    } catch {
+        onCatch && onCatch("Не удалось сериализовать выделенные фотографии");
+        onFinally && onFinally();
+        return;
+    }
     const options = {method: "PUT", credentials: 'include', headers, body};
 
-    return await fetchWrapper(url, options);
+    fetchWrapper({url, options, onThen, onCatch, onFinally});
 }
 
-export async function getAlbums() {
+export function getAlbums({onThen, onCatch, onFinally}) {
     const url = process.env.REACT_APP_API_URL + "/albums";
     const options = {method: "GET", credentials: 'include'};
 
-    return await fetchWrapper(url, options);
+    fetchWrapper({url, options, onThen, onCatch, onFinally});
 }
 
-export async function getAlbum(id) {
+export function getAlbum({id, onThen, onCatch, onFinally}) {
     const url = process.env.REACT_APP_API_URL + `/albums/${id}`;
     const options = {method: "GET", credentials: 'include'};
 
-    return await fetchWrapper(url, options);
+    fetchWrapper({url, options, onThen, onCatch, onFinally});
 }
 
-export async function addAlbum(name) {
+export function addAlbum({name, onThen, onCatch, onFinally}) {
     if (!name)
         throw new Error('Имя альбома не должно быть пустым');
     const url = process.env.REACT_APP_API_URL + "/albums";
     const headers = {"Content-Type": "application/json"};
+
+    // Avoid stringify exception
+    name = name.toString();
     const body = JSON.stringify({name});
     const options = {method: "POST", credentials: 'include', headers, body};
 
-    return await fetchWrapper(url, options);
+    fetchWrapper({url, options, onThen, onCatch, onFinally});
 }
 
-export async function deleteAlbums(selection) {
+export function deleteAlbums({selection, onThen, onCatch, onFinally}) {
     const url = process.env.REACT_APP_API_URL + "/albums";
     const headers = {"Content-Type": "application/json"};
-    const body = JSON.stringify([...selection]);
+
+    let body;
+    try {
+        body = JSON.stringify([...selection])
+    } catch {
+        onCatch && onCatch("Не удалось сериализовать выделенные альбомы");
+        onFinally && onFinally();
+        return;
+    }
     const options = {method: "DELETE", credentials: 'include', headers, body};
 
-    return await fetchWrapper(url, options);
+    fetchWrapper({url, options, onThen, onCatch, onFinally});
 }
 
-export async function signUp(user) {
-    if (!user.login || !user.password)
-        throw new Error('Логин и пароль не должны быть пустыми');
+export function signUp({login, password, onThen, onCatch, onFinally}) {
+    if (!login || !password) {
+        onCatch && onCatch('Логин и пароль не должны быть пустыми');
+        onFinally && onFinally();
+        return;
+    }
 
     const url = process.env.REACT_APP_API_URL + "/users";
     const headers = {"Content-Type": "application/json"};
-    const body = JSON.stringify(user);
 
-    // Server authorizes => include credentials
+    // Avoid stringify exception
+    login = login.toString();
+    password = password.toString();
+    const body = JSON.stringify({login, password});
+
+    // Implicit sign in => include credentials
     const options = {method: "POST", credentials: 'include', headers, body};
 
-    return await fetchWrapper(url, options);
+    fetchWrapper({url, options, onThen, onCatch, onFinally});
 }
 
-export async function signIn(login, password) {
-    if (!login || !password)
-        throw new Error('Логин и пароль не должны быть пустыми');
+export function signIn({login, password, onThen, onCatch, onFinally}) {
+    if (!login || !password) {
+        onCatch && onCatch('Логин и пароль не должны быть пустыми');
+        onFinally && onFinally();
+        return;
+    }
 
-    const user = {login, password};
     const url = process.env.REACT_APP_API_URL + "/session";
     const headers = {"Content-Type": "application/json"};
-    const body = JSON.stringify(user);
+
+    // Avoid stringify exception
+    login = login.toString();
+    password = password.toString();
+    const body = JSON.stringify({login, password});
+
     const options = {method: "POST", headers, credentials: 'include', body};
 
-    return await fetchWrapper(url, options);
+    fetchWrapper({url, options, onThen, onCatch, onFinally});
 }
 
-export async function signOut() {
+export function signOut({onThen, onCatch, onFinally}) {
     const url = process.env.REACT_APP_API_URL + "/session";
     const options = {method: "DELETE", credentials: 'include'};
 
-    return await fetchWrapper(url, options);
+    fetchWrapper({url, options, onThen, onCatch, onFinally});
 }

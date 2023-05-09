@@ -3,7 +3,7 @@ import SettingItem from "../controls/SettingItem";
 import {SelectionContext, UserContext} from "../../Contexts";
 import {resetActivePage} from "../../utils/reset";
 import AddAlbum from "../modals/AddAlbum";
-import {deleteAlbums} from "../../api/rest";
+import {deleteAlbums} from "../../api/current";
 
 function AlbumToolbar({albums, onUpdate}) {
     const selectionContext = useContext(SelectionContext);
@@ -30,9 +30,7 @@ function AlbumToolbar({albums, onUpdate}) {
 
     const showAddAlbum = useCallback(() => setShowAddAlbumModal(true), [setShowAddAlbumModal]);
     const hideAddAlbum = useCallback(() => setShowAddAlbumModal(false), [setShowAddAlbumModal]);
-    const deleteSelected = useCallback(() => {
-        deleteAlbums(selection).then(onUpdate);
-    }, [selection, onUpdate]);
+    const deleteSelected = () => deleteAlbums({selection, onThen: onUpdate, onCatch: alert});
 
     return (
         <div>

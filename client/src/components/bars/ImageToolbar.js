@@ -1,7 +1,7 @@
 import React, {useCallback, useContext, useState} from 'react';
 import SettingItem from "../controls/SettingItem";
 import {SelectionContext, UserContext} from "../../Contexts";
-import {deleteImages, postImages} from "../../api/rest"
+import {deleteImages, postImages} from "../../api/current"
 import {resetActivePage} from "../../utils/reset";
 import MoveToAlbum from "../modals/MoveToAlbum";
 
@@ -25,16 +25,12 @@ function ImageToolbar({images, onUpdate}) {
         setSelectionMode(!selectionMode)
     }, [selectionContext, selectionMode, setSelectionMode]);
     const selectAll = () => {
-        let updatedSelection = new Set(nextSelectAll ? images.map(image => image.id) : []);
+        const updatedSelection = new Set(nextSelectAll ? images.map(image => image.id) : []);
         setSelection(updatedSelection);
         setNextSelectAll(!nextSelectAll);
     }
-    const deleteSelected = useCallback(() => {
-        deleteImages(selection).then(onUpdate);
-    }, [selection, onUpdate]);
-    const addFiles = (event) => {
-        postImages(event.currentTarget.files).then(onUpdate);
-    }
+    const deleteSelected = () => deleteImages({selection, onThen: onUpdate, onCatch: alert});
+    const addFiles = ({currentTarget: {files}}) => postImages({files, onThen: onUpdate, onCatch: alert})
 
     return (
         <div>
