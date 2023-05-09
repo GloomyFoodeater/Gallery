@@ -1,12 +1,12 @@
 const {getConnection} = require('./../db');
 
 async function getImages(userId) {
-    const [data, _fields] = await getConnection().execute('SELECT * FROM image ORDER BY id ASC WHERE user_id=${userId}');
+    const [data, _fields] = await getConnection().execute(`SELECT * FROM image WHERE user_id=${userId} ORDER BY id ASC`);
     return data;
 }
 
 async function getImage(userId, id) {
-    const [data] = await getConnection().execute(`SELECT * FROM image WHERE id=${id} WHERE user_id=${userId}`);
+    const [data] = await getConnection().execute(`SELECT * FROM image WHERE id=${id} AND user_id=${userId}`);
     return data[0];
 }
 
@@ -17,7 +17,7 @@ async function addImage(userId, image) {
     const prefix = 'uploads\\'
     const uuid = image.path.slice(image.path.indexOf(prefix) + prefix.length)
 
-    await getConnection().execute(`INSERT INTO image (uuid, name, extension, userId) VALUES ('${uuid}', '${name}', '${extension}, ${userId}')`)
+    await getConnection().execute(`INSERT INTO image (uuid, name, extension, user_id) VALUES ('${uuid}', '${name}', '${extension}', ${userId})`)
 }
 
 async function deleteImage(userId, id) {
@@ -35,13 +35,13 @@ async function moveImage(userId, imageId, albumId) {
 }
 
 async function getAlbums(userId) {
-    const [data] = await getConnection().execute('SELECT * FROM album ORDER BY id ASC WHERE user_id=${userId}');
+    const [data] = await getConnection().execute(`SELECT * FROM album WHERE user_id=${userId} ORDER BY id ASC`);
     return data;
 }
 
 async function getAlbum(userId, id) {
-    const [albums] = await getConnection().execute(`SELECT * FROM album WHERE id=${id} WHERE user_id=${userId}`);
-    const [images] = await getConnection().execute(`SELECT * FROM image WHERE album_id=${id} ORDER BY id ASC WHERE user_id=${userId}`);
+    const [albums] = await getConnection().execute(`SELECT * FROM album WHERE id=${id} AND user_id=${userId}`);
+    const [images] = await getConnection().execute(`SELECT * FROM image WHERE album_id=${id} AND user_id=${userId} ORDER BY id ASC`);
     return {id, name: albums[0].name, images};
 }
 

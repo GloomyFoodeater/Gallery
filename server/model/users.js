@@ -20,6 +20,8 @@ async function getUserById(id) {
 async function getUserByPair({login, password}) {
     const [users] = await getConnection().execute(`SELECT * FROM user WHERE login="${login}"`);
     const user = users[0];
+    if (!user) return user;
+
     const correctPassword = compareSync(password, user.password.toString());
     return correctPassword ? user : undefined;
 }

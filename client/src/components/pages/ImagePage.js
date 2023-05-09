@@ -5,8 +5,8 @@ import {groupModulo} from '../../utils/collections'
 import ImageToolbar from "../bars/ImageToolbar";
 import Table from "../containers/Table";
 import * as gallery from "../../api/rest";
-import {SelectionContext} from "../../Contexts";
-import {resetSelection} from "../../utils/selection";
+import {SelectionContext, UserContext} from "../../Contexts";
+import {resetActivePage} from "../../utils/reset";
 
 let markUp = <h1>Loading...</h1>;
 
@@ -14,13 +14,14 @@ function ImagePage() {
     const [images, setImages] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const selectionContext = useContext(SelectionContext);
+    const userContext = useContext(UserContext);
     const onUpdate = useCallback(() => setLoading(true), [setLoading]);
     useEffect(() => {
         gallery.getImages()
             .then((result) => setImages(result))
             .catch(() => setImages(null))
             .finally(() => {
-                resetSelection(selectionContext);
+                resetActivePage(selectionContext, userContext);
                 setLoading(false)
             });
     }, [isLoading]); // Do not put other dependencies to avoid recursion

@@ -1,9 +1,11 @@
 const {sign} = require("jsonwebtoken");
 const {getUserByPair} = require('./../model/users');
 const {NOT_AUTHORIZED, BAD_REQUEST} = require("../const/http_codes");
+const {resetAccessToken} = require("../utils/cookie");
 
 function generateAccessToken(userId) {
-    return sign({userId}, process.env.TOKEN_SECRET, {expiresIn: process.env.EXPIRATION_PERIOD});
+    const expiresIn = process.env.EXPIRATION_PERIOD + 's';
+    return sign({userId}, process.env.TOKEN_SECRET, {expiresIn});
 }
 
 async function authorize(req, res) {
@@ -25,7 +27,7 @@ async function authorize(req, res) {
 }
 
 async function logout(req, res) {
-    res.cookie(process.env.ACCESS_TOKEN, '', {expires: new Date()});
+    resetAccessToken(res);
     res.end();
 }
 

@@ -4,8 +4,7 @@ const {NOT_FOUND, BAD_REQUEST} = require("../const/http_codes");
 
 async function getImages(req, res) {
     try {
-        const token = req.cookies[process.env.ACCESS_TOKEN];
-        const images = await gallery.getImages();
+        const images = await gallery.getImages(req.userId);
         res.json(images);
     } catch (e) {
         console.log(e);
@@ -15,7 +14,7 @@ async function getImages(req, res) {
 
 async function getImage(req, res) {
     try {
-        const {uuid, name, extension} = await gallery.getImage(req.params.id);
+        const {uuid, name, extension} = await gallery.getImage(req.userId, req.params.id);
         const filePath = path.resolve(__dirname + '/../uploads/' + uuid);
         const fileName = name + '.' + extension;
         if (req["Content-Disposition"] === "inline")
@@ -31,7 +30,7 @@ async function getImage(req, res) {
 
 async function addImages(req, res) {
     try {
-        req.files.forEach(image => gallery.addImage(image).catch(console.log));
+        req.files.forEach(image => gallery.addImage(req.userId, image).catch(console.log));
         res.end();
     } catch (e) {
         console.log(e);
@@ -41,7 +40,7 @@ async function addImages(req, res) {
 
 async function deleteImages(req, res) {
     try {
-        req.body.forEach(id => gallery.deleteImage(id).catch(console.log));
+        req.body.forEach(id => gallery.deleteImage(req.userId, id).catch(console.log));
         res.end();
     } catch (e) {
         console.log(e);

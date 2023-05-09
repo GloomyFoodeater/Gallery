@@ -4,8 +4,8 @@ import AlbumItem from '../controls/AlbumItem';
 import AlbumToolbar from "../bars/AlbumToolbar";
 import Table from "../containers/Table";
 import * as gallery from "../../api/rest";
-import {NavigationContext, SelectionContext} from "../../Contexts";
-import {resetSelection} from "../../utils/selection";
+import {NavigationContext, SelectionContext, UserContext} from "../../Contexts";
+import {resetActivePage} from "../../utils/reset";
 
 let markUp = <h1>Loading...</h1>;
 
@@ -13,6 +13,7 @@ function AlbumPage() {
     const [albums, setAlbums] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const selectionContext = useContext(SelectionContext);
+    const userContext = useContext(UserContext);
     const {activeAlbum, setActiveAlbum} = useContext(NavigationContext);
     const onUpdate = useCallback(() => setLoading(true), [setLoading]);
     useEffect(() => {
@@ -23,7 +24,7 @@ function AlbumPage() {
             })
             .catch(() => setAlbums(null))
             .finally(() => {
-                resetSelection(selectionContext);
+                resetActivePage(selectionContext, userContext);
                 setLoading(false);
             });
     }, [isLoading]); // Do not put other dependencies to avoid recursion

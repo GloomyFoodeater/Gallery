@@ -35,7 +35,8 @@ function App() {
 
     useEffect(() => {
         setActivePage(defaultPage(isAuthorized));
-    }, [isAuthorized, setActivePage]);
+        if (!isAuthorized) setActiveAlbum(undefined);
+    }, [isAuthorized, setActivePage, setActiveAlbum]);
 
     return (
         <div className="container-fluid">

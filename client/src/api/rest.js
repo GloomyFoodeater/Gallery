@@ -1,6 +1,7 @@
 function isJson(response) {
     // response.bodyUsed is false on empty arrays
-    return response.headers.get('Content-Type')?.includes("application/json");
+    return response.headers.get('Content-Type')?.includes("application/json") &&
+        (response.headers.get('Content-Length') ?? 0) > 0;
 }
 
 async function fetchWrapper(url, options) {
@@ -9,6 +10,7 @@ async function fetchWrapper(url, options) {
         const {message} = await response.json();
         throw new Error(message);
     }
+    console.log(response.headers.get('Content-Length'));
     if (isJson(response)) return await response.json();
 }
 

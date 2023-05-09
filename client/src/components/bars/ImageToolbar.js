@@ -1,12 +1,13 @@
 import React, {useCallback, useContext, useState} from 'react';
 import SettingItem from "../controls/SettingItem";
-import {SelectionContext} from "../../Contexts";
+import {SelectionContext, UserContext} from "../../Contexts";
 import {deleteImages, postImages} from "../../api/rest"
-import {resetSelection} from "../../utils/selection";
+import {resetActivePage} from "../../utils/reset";
 import MoveToAlbum from "../modals/MoveToAlbum";
 
 function ImageToolbar({images, onUpdate}) {
     const selectionContext = useContext(SelectionContext);
+    const userContext = useContext(UserContext);
     const {
         selectionMode,
         setSelectionMode,
@@ -20,7 +21,7 @@ function ImageToolbar({images, onUpdate}) {
     const showMove = useCallback(() => setShowMoveModal(true), [setShowMoveModal]);
     const hideMove = useCallback(() => setShowMoveModal(false), [setShowMoveModal]);
     const toggleSelection = useCallback(() => {
-        resetSelection(selectionContext)
+        resetActivePage(selectionContext, userContext)
         setSelectionMode(!selectionMode)
     }, [selectionContext, selectionMode, setSelectionMode]);
     const selectAll = () => {

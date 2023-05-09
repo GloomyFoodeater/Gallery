@@ -1,12 +1,13 @@
 import React, {useCallback, useContext, useState} from 'react';
 import SettingItem from "../controls/SettingItem";
-import {SelectionContext} from "../../Contexts";
-import {resetSelection} from "../../utils/selection";
+import {SelectionContext, UserContext} from "../../Contexts";
+import {resetActivePage} from "../../utils/reset";
 import AddAlbum from "../modals/AddAlbum";
 import {deleteAlbums} from "../../api/rest";
 
 function AlbumToolbar({albums, onUpdate}) {
     const selectionContext = useContext(SelectionContext);
+    const userContext = useContext(UserContext);
     const {
         selectionMode,
         setSelectionMode,
@@ -18,7 +19,7 @@ function AlbumToolbar({albums, onUpdate}) {
     const [showAddAlbumModal, setShowAddAlbumModal] = useState(false);
 
     const toggleSelection = useCallback(() => {
-        resetSelection(selectionContext);
+        resetActivePage(selectionContext, userContext);
         setSelectionMode(!selectionMode)
     }, [selectionContext, selectionMode, setSelectionMode]);
     const selectAll = () => {

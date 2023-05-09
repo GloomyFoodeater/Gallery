@@ -3,8 +3,8 @@ import {groupModulo} from "../../utils/collections";
 import Table from "../containers/Table";
 import ImageItem from "../controls/ImageItem";
 import * as gallery from "../../api/rest";
-import {resetSelection} from "../../utils/selection";
-import {NavigationContext, SelectionContext} from "../../Contexts";
+import {resetActivePage} from "../../utils/reset";
+import {NavigationContext, SelectionContext, UserContext} from "../../Contexts";
 
 let markUp = <h1>Loading...</h1>;
 
@@ -12,13 +12,14 @@ function CurrentAlbumPage() {
     const [album, setAlbum] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const selectionContext = useContext(SelectionContext);
+    const userContext = useContext(UserContext);
     const {activeAlbum: {id}} = useContext(NavigationContext);
     useEffect(() => {
         gallery.getAlbum(id)
             .then(({images}) => setAlbum(images))
             .catch(() => setAlbum(null))
             .finally(() => {
-                resetSelection(selectionContext);
+                resetActivePage(selectionContext, userContext);
                 setLoading(false)
             })
     }, [isLoading]); // Do not put other dependencies to avoid recursion
