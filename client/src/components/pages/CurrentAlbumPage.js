@@ -5,39 +5,33 @@ import ImageItem from "../controls/ImageItem";
 import {getAlbum} from "../../api/current";
 import {resetActivePage} from "../../utils/reset";
 import {NavigationContext, SelectionContext, UserContext} from "../../Contexts";
-
-let markUp = <h1>Loading...</h1>;
+import Spinner from "../visual/Spinner";
 
 function CurrentAlbumPage() {
-    const [album, setAlbum] = useState([]);
+    const [album, setAlbum] = useState(null);
     const [isLoading, setLoading] = useState(true);
     const selectionContext = useContext(SelectionContext);
     const userContext = useContext(UserContext);
     const {activeAlbum: {id}} = useContext(NavigationContext);
     useEffect(() => {
-        const onCatch = (reason) => {
-            setAlbum(null);
-            alert(reason);
+        if (isLoading) {
+            const onCatch = () => setAlbum(null)
+            const onFinally = () => {
+                resetActivePage(selectionContext, userContext);
+                setLoading(false);
+            }
+            getAlbum({id, onThen: setAlbum, onCatch, onFinally})
         }
-        const onFinally = () => {
-            resetActivePage(selectionContext, userContext);
-            setLoading(false);
-        }
-        getAlbum({id, onThen: setAlbum, onCatch, onFinally})
     }, [isLoading]); // Do not put other dependencies to avoid recursion
 
-    if (isLoading)
-        return markUp;
 
-    if (album) {
-        const table = groupModulo(album.images, 4);
-        markUp = (
-            <div className="container-fluid">
-                <Table item={ImageItem}>{table}</Table>
-            </div>
-        );
-    } else markUp = <h1>Не удалось загрузить альбом</h1>
-    return markUp
+    if (isLoading || !album) return <Spinner isError={!isLoading && !album}/>;
+    const table = groupModulo(album.images, 4);
+    return (
+        <div className="container-fluid">
+            <Table item={ImageItem}>{table}</Table>
+        </div>
+    );
 }
 
 export default CurrentAlbumPage;

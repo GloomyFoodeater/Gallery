@@ -7,41 +7,34 @@ import Table from "../containers/Table";
 import * as gallery from "../../api/current";
 import {SelectionContext, UserContext} from "../../Contexts";
 import {resetActivePage} from "../../utils/reset";
-
-let markUp = <h1>Loading...</h1>;
+import Spinner from "../visual/Spinner";
 
 function ImagePage() {
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState(null);
     const [isLoading, setLoading] = useState(true);
     const selectionContext = useContext(SelectionContext);
     const userContext = useContext(UserContext);
     const onUpdate = useCallback(() => setLoading(true), [setLoading]);
     useEffect(() => {
-        const onCatch = (reason) => {
-            setImages(null);
-            alert(reason);
-        };
-        const onFinally = () => {
-            resetActivePage(selectionContext, userContext);
-            setLoading(false)
-        };
-        gallery.getImages({onThen:  setImages, onFinally, onCatch});
+        if (isLoading) {
+            const onCatch = () => setImages(null);
+            const onFinally = () => {
+                resetActivePage(selectionContext, userContext);
+                setLoading(false);
+            };
+            gallery.getImages({onThen: setImages, onFinally, onCatch});
+        }
     }, [isLoading]); // Do not put other dependencies to avoid recursion
 
-    if (isLoading)
-        return markUp;
-
-    if (images) {
-        const table = groupModulo(images, 4);
-        markUp = (
-            <div className="container-fluid">
-                <ImageToolbar images={images} onUpdate={onUpdate}/>
-                <hr/>
-                <Table item={ImageItem}>{table}</Table>
-            </div>
-        );
-    } else markUp = <h1>Не удалось загрузить изображения</h1>;
-    return markUp;
+    if (isLoading || !images) return <Spinner isError={!isLoading && !images}/>;
+    const table = groupModulo(images, 4);
+    return (
+        <div className="container-fluid">
+            <ImageToolbar images={images} onUpdate={onUpdate}/>
+            <hr/>
+            <Table item={ImageItem}>{table}</Table>
+        </div>
+    );
 }
 
 export default ImagePage;
