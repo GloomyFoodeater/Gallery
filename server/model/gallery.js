@@ -1,13 +1,23 @@
 const {getConnection} = require('./../db');
+const ForbiddenError = require("../errors/ForbiddenError");
+const DatabaseError = require("../errors/DatabaseError");
 
 async function getImages(userId) {
-    const [data, _fields] = await getConnection().execute(`SELECT * FROM image WHERE user_id=${userId} ORDER BY id ASC`);
-    return data;
+    try {
+        const [data] = await getConnection().execute(`SELECT * FROM image WHERE user_id=${userId} ORDER BY id ASC`);
+        return data;
+    } catch (e) {
+        throw new DatabaseError("Не удалось получить изображения", e.code, e.sql);
+    }
 }
 
 async function getImage(userId, id) {
-    const [data] = await getConnection().execute(`SELECT * FROM image WHERE id=${id} AND user_id=${userId}`);
-    return data[0];
+    try {
+        const [data] = await getConnection().execute(`SELECT * FROM image WHERE id=${id} AND user_id=${userId}`);
+        return data[0];
+    } catch (e) {
+        throw new DatabaseError("Не удалось получить изображение", e.code, e.sql);
+    }
 }
 
 async function addImage(userId, image) {
@@ -21,39 +31,45 @@ async function addImage(userId, image) {
 }
 
 async function deleteImage(userId, id) {
-    const [data] = await getConnection().execute(`DELETE FROM image WHERE id=${id} AND user_id=${userId}`);
-    //TODO: Erase
-    console.log(data);
-    if (data.length <= 0) throw new ForbiddenError("Попытка удалить фотографии другого пользователя");
+    // AND prevents from cross-user movements
+    await getConnection().execute(`DELETE FROM image WHERE id=${id} AND user_id=${userId}`);
 }
 
 async function moveImage(userId, imageId, albumId) {
-    const [data] = await getConnection().execute(`UPDATE image SET album_id=${albumId} WHERE id=${imageId} AND user_id=${userId}`);
-    //TODO: Erase
-    console.log(data);
-    if (data.length <= 0) throw new ForbiddenError("Попытка переместить фотографии другого пользователя");
+    // AND prevents from cross-user movements
+    await getConnection().execute(`UPDATE image SET album_id=${albumId} WHERE id=${imageId} AND user_id=${userId}`);
 }
 
 async function getAlbums(userId) {
-    const [data] = await getConnection().execute(`SELECT * FROM album WHERE user_id=${userId} ORDER BY id ASC`);
-    return data;
+    try {
+        const [data] = await getConnection().execute(`SELECT * FROM album WHERE user_id=${userId} ORDER BY id ASC`);
+        return data;
+    } catch (e) {
+        throw new DatabaseError("Не удалось получить альбомы", e.code, e.sql);
+    }
 }
 
 async function getAlbum(userId, id) {
-    const [albums] = await getConnection().execute(`SELECT * FROM album WHERE id=${id} AND user_id=${userId}`);
-    const [images] = await getConnection().execute(`SELECT * FROM image WHERE album_id=${id} AND user_id=${userId} ORDER BY id ASC`);
-    return {id, name: albums[0].name, images};
+    try {
+        const [albums] = await getConnection().execute(`SELECT * FROM album WHERE id=${id} AND user_id=${userId}`);
+        const [images] = await getConnection().execute(`SELECT * FROM image WHERE album_id=${id} AND user_id=${userId} ORDER BY id ASC`);
+        return {id, name: albums[0].name, images};
+    } catch (e) {
+        throw new DatabaseError("Не удалось получить альбом", e.code, e.sql);
+    }
 }
 
 async function addAlbum(userId, name) {
-    await getConnection().execute(`INSERT album (name, user_id) VALUES ('${name}', ${userId})`);
+    try {
+        await getConnection().execute(`INSERT album (name, user_id) VALUES ('${name}', ${userId})`);
+    } catch (e) {
+        throw new DatabaseError("Не удалось добавить альбом", e.code, e.sql);
+    }
 }
 
 async function deleteAlbum(userId, id) {
-    const [data] = await getConnection().execute(`DELETE FROM album WHERE id=${id} AND user_id=${userId}`);
-    //TODO: Erase
-    console.log(data);
-    if (data.length <= 0) throw new ForbiddenError("Попытка удалить альбом другого пользователя");
+    // AND prevents from cross-user movements
+    await getConnection().execute(`DELETE FROM album WHERE id=${id} AND user_id=${userId}`);
 }
 
 module.exports = {

@@ -1,34 +1,19 @@
-const {sign} = require("jsonwebtoken");
-const {getUserByPair} = require('./../model/users');
-const {NOT_AUTHORIZED, BAD_REQUEST} = require("../const/http_codes");
-const {resetAccessToken} = require("../utils/cookie");
+const session = require('./../model/session');
 
-function generateAccessToken(userId) {
-    const expiresIn = process.env.EXPIRATION_PERIOD + 's';
-    return sign({userId}, process.env.TOKEN_SECRET, {expiresIn});
-}
-
-async function authorize(req, res) {
+async function authorize(req, res, next) {
     try {
-        const user = await getUserByPair(req.body);
-        if (user) {
-            const token = generateAccessToken(user.id);
-            res.cookie(process.env.ACCESS_TOKEN, token, {
-                httpOnly: true,
-                maxAge: process.env.EXPIRATION_PERIOD * 1000
-            }).end();
-        } else {
-            res.status(NOT_AUTHORIZED).json({message: "Пользователь не найден"});
-        }
+        await session.authorize(req, res);
     } catch (e) {
-        console.log(e);
-        res.status(BAD_REQUEST).json({message: "Не указаны логин и пароль"});
+        next(e);
     }
 }
 
-async function logout(req, res) {
-    resetAccessToken(res);
-    res.end();
+function logout(req, res, next) {
+    try {
+        session.logout(req, res)
+    } catch (e) {
+        next(e);
+    }
 }
 
 module.exports = {authorize, logout};

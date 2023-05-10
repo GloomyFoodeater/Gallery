@@ -1,18 +1,19 @@
 const gallery = require('./../model/gallery');
 const path = require('path');
-const {NOT_FOUND, BAD_REQUEST} = require("../const/http_codes");
+const ForbiddenError = require('./../errors/ForbiddenError');
+const BadRequestError = require('./../errors/BadRequestError')
+const NotFoundError = require("../errors/NotFoundError");
 
-async function getImages(req, res) {
+async function getImages(req, res, next) {
     try {
         const images = await gallery.getImages(req.userId);
         res.json(images);
     } catch (e) {
-        console.log(e);
-        res.status(NOT_FOUND).end();
+        next(e);
     }
 }
 
-async function getImage(req, res) {
+async function getImage(req, res, next) {
     try {
         const {uuid, name, extension} = await gallery.getImage(req.userId, req.params.id);
         const filePath = path.resolve(__dirname + '/../uploads/' + uuid);
@@ -22,29 +23,26 @@ async function getImage(req, res) {
         else
             res.download(filePath, fileName)
     } catch (e) {
-        console.log(e);
-        res.status(NOT_FOUND).end();
+        if(e instanceof TypeError) e = new NotFoundError("Изображение не найдено");
+        next(e);
     }
 }
 
-
-async function addImages(req, res) {
+async function addImages(req, res, next) {
     try {
-        req.files.forEach(image => gallery.addImage(req.userId, image).catch(console.log));
+        req.files.forEach(image => gallery.addImage(req.userId, image));
         res.end();
-    } catch (e) {
-        console.log(e);
-        res.status(BAD_REQUEST).end();
+    } catch {
+        next(new BadRequestError("Некорректно десереализовано выделение"));
     }
 }
 
-async function deleteImages(req, res) {
+async function deleteImages(req, res, next) {
     try {
-        req.body.forEach(id => gallery.deleteImage(req.userId, id).catch(console.log));
+        req.body.forEach(id => gallery.deleteImage(req.userId, id));
         res.end();
-    } catch (e) {
-        console.log(e);
-        res.status(BAD_REQUEST).end();
+    } catch {
+        next(new BadRequestError("Некорректно десереализовано выделение"));
     }
 }
 

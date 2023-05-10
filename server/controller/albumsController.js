@@ -1,55 +1,50 @@
 const gallery = require('./../model/gallery');
-const {NOT_FOUND, INTERNAL_SERVER_ERROR, BAD_REQUEST} = require("../const/http_codes");
+const BadRequestError = require('./../errors/BadRequestError');
 
-async function getAlbums(req, res) {
+async function getAlbums(req, res, next) {
     try {
         const albums = await gallery.getAlbums(req.userId);
         res.json(albums);
     } catch (e) {
-        console.log(e);
-        res.status(NOT_FOUND).end();
+        next(e);
     }
 }
 
-async function getAlbum(req, res) {
+async function getAlbum(req, res, next) {
     try {
-        const images = await gallery.getAlbum(req.userId, req.params.id);
-        res.json(images);
+        const album = await gallery.getAlbum(req.userId, req.params.id);
+        res.json(album);
     } catch (e) {
-        console.log(e);
-        res.status(NOT_FOUND).end();
+        next(e);
     }
 }
 
-async function addAlbum(req, res) {
+async function addAlbum(req, res, next) {
     try {
         const name = req.body.name;
         await gallery.addAlbum(req.userId, name);
         res.end();
     } catch (e) {
-        console.log(e);
-        res.status(INTERNAL_SERVER_ERROR).end();
+        next(e);
     }
 }
 
-async function deleteAlbums(req, res) {
+async function deleteAlbums(req, res, next) {
     try {
-        req.body.forEach(id => gallery.deleteAlbum(req.userId, id).catch(console.log));
+        req.body.forEach(id => gallery.deleteAlbum(req.userId, id));
         res.end();
-    } catch (e) {
-        console.log(e);
-        res.status(BAD_REQUEST).end();
+    } catch {
+        next(new BadRequestError("Некорректно десереализовано выделение")); // TypeError from body.forEach
     }
 }
 
-async function updateAlbum(req, res) {
+async function updateAlbum(req, res, next) {
     try {
         const albumId = req.params.id;
-        req.body.forEach(imageId => gallery.moveImage(req.userId, imageId, albumId).catch(console.log));
+        req.body.forEach(imageId => gallery.moveImage(req.userId, imageId, albumId));
         res.end();
-    } catch (e) {
-        console.log(e);
-        res.status(BAD_REQUEST).end();
+    } catch {
+        next(new BadRequestError("Некорректно десереализовано выделение")); // TypeError from body.forEach
     }
 }
 
