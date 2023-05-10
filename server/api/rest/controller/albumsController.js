@@ -1,5 +1,5 @@
-const gallery = require('./../model/gallery');
-const BadRequestError = require('./../errors/BadRequestError');
+const gallery = require('../../../model/gallery');
+const BadRequestError = require('../../../errors/BadRequestError');
 
 async function getAlbums(req, res, next) {
     try {

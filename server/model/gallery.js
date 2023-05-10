@@ -1,5 +1,4 @@
 const {getConnection} = require('./../db');
-const ForbiddenError = require("../errors/ForbiddenError");
 const DatabaseError = require("../errors/DatabaseError");
 
 async function getImages(userId) {

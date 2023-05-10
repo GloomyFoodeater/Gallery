@@ -1,4 +1,4 @@
-const session = require('./../model/session');
+const session = require('../../../model/session');
 
 async function authorize(req, res, next) {
     try {

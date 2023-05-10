@@ -1,8 +1,7 @@
-const gallery = require('./../model/gallery');
+const gallery = require('../../../model/gallery');
 const path = require('path');
-const ForbiddenError = require('./../errors/ForbiddenError');
-const BadRequestError = require('./../errors/BadRequestError')
-const NotFoundError = require("../errors/NotFoundError");
+const BadRequestError = require('../../../errors/BadRequestError')
+const NotFoundError = require("../../../errors/NotFoundError");
 
 async function getImages(req, res, next) {
     try {
@@ -16,14 +15,14 @@ async function getImages(req, res, next) {
 async function getImage(req, res, next) {
     try {
         const {uuid, name, extension} = await gallery.getImage(req.userId, req.params.id);
-        const filePath = path.resolve(__dirname + '/../uploads/' + uuid);
+        const filePath = path.resolve(__dirname + '../../../uploads/' + uuid);
         const fileName = name + '.' + extension;
         if (req["Content-Disposition"] === "inline")
             res.sendFile(filePath);
         else
             res.download(filePath, fileName)
     } catch (e) {
-        if(e instanceof TypeError) e = new NotFoundError("Изображение не найдено");
+        if (e instanceof TypeError) e = new NotFoundError("Изображение не найдено");
         next(e);
     }
 }
